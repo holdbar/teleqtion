@@ -1,0 +1,548 @@
+@import "vars"
+@import "fonts"
+@import "libs"
+@import "_mixins.sass"
+
+
+*
+  margin: 0
+  padding: 0
+  box-sizing: border-box
+
+::after, ::before
+    box-sizing: border-box
+
+::selection
+    color: #000
+    background: white
+
+
+.container
+  @include make-container()
+
+body
+	line-height: 1.5
+	font-family: $default-font
+	overflow-x: hidden
+	color: $text
+
+.main-wrapper
+  z-index: 0
+
+.block1-wrapper
+  width: 100%
+  background: #f5fafe
+
+a
+  text-decoration: none
+
+header
+  background: #f5fafe
+  top: 0
+  left: 0
+  width: 100%
+  line-height: 1.75
+
+
+// Navbar
+.navbar
+  background-color: transparent
+  display: flex
+  flex-flow: row wrap
+  justify-content: space-between
+  align-items: center
+  ul
+    list-style: none
+    li
+      float: left
+      margin-left: 15px
+      position: relative
+      display: block
+      padding: 21px 0.5rem
+      letter-spacing: 0.5px
+      a
+        color: #232323
+        padding: 21px 0.5rem
+        text-transform: uppercase
+        font-family: $default-font
+        font-size: 14px
+        letter-spacing: 2px
+        font-weight: 500
+        text-decoration: none
+        &:hover
+          color: #6f6f6f
+          cursor: pointer
+        &.active
+          color: #4e54c8
+      &:last-child
+        padding: 0
+        margin: 15px 0 0
+        min-width: 130px
+        a
+          padding: 10px 0.1rem
+
+  .navbar-brand
+    img
+      max-height: 43px
+      vertical-align: middle
+      max-width: 100%
+
+.sticky
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.2)
+  position: fixed
+  left: 0
+  width: 100%
+  transition: transform 1.5s
+  transform: translateY(100px)
+  z-index: 99999
+  top: -100px
+  background: #fff
+  margin: 0 auto
+  right: 0
+
+
+.nav-btn
+  min-width: 150px
+  background: linear-gradient(-45deg, #4e54c8, #8089ff)
+  cursor: pointer
+  font-weight: 500
+  color: #fff !important
+  letter-spacing: 3px
+  font-size: 14px
+  line-height: 20px
+  padding: 14px 28px
+  border-radius: 30px
+  text-transform: uppercase
+  display: inline-block
+  vertical-align: middle
+  transform: perspective(1px) translateZ(0)
+  position: relative
+  transition: all linear 400ms
+  border: none
+  text-align: center
+  &::before
+    background: #4e54c8
+    content: ""
+    position: absolute
+    z-index: -1
+    top: 0
+    bottom: 0
+    left: 0
+    right: 0
+    display: inline-block
+    transform: scaleX(0)
+    transform-origin: 51%
+    transition-property: transform
+    transition-duration: 0.3s
+    border-radius: 22px
+    border: none
+  &:hover:before, &:active:before
+    transform: scaleX(1)
+
+
+.nav-toggle
+  flex: 0 0 100%
+  cursor: pointer
+  background: transparent
+  border: 1px solid transparent
+  transform: translate(-50%, -50%)
+  &:focus
+    outline-width: 0
+  &:hover
+    cursor: pointer
+  [class*='bar-']
+    background: #4e54c8
+    display: none
+    transform: rotate(0deg)
+    transition: .2s ease all
+    border-radius: 4px
+    height: 4px
+    width: 34px
+    margin-bottom: 4px
+  .bar-bot
+    margin-bottom: 0
+
+.opened
+  .bar-top
+    transform: rotate(45deg)
+    transform-origin: 15% 15%
+  .bar-mid
+    opacity: 0
+  .bar-bot
+    transform: rotate(-45deg)
+    transform-origin: 15% 95%
+
+
+.section1
+  z-index: 3
+  display: flex
+  flex-flow: row nowrap
+  justify-content: space-between
+  align-items: center
+  div
+    min-width: 50%
+    margin-top: -5%
+    letter-spacing: 2px
+    h1
+      font-size: 35px
+      padding-bottom: 5%
+      color: #4e54c8
+    .btn
+      margin-top: 20px
+      min-width: 200px
+  img
+    width: 100%
+    z-index: 3
+
+.section1-bg
+  z-index: 2
+  background: white
+  margin-top: -8%
+  display: block
+  position: absolute
+  left: 0
+  max-width: 100%
+  height: auto
+
+.section2
+  position: relative
+  background-color: white
+  margin-top: 20%
+  text-align: center
+  .heading
+    p
+      color: #4e54c8
+    h2
+      padding-bottom: 2%
+      line-height: 140%
+      font-weight: 600
+      color: black
+      font-size: 35px
+  .features
+    display: flex
+    flex-flow: row nowrap
+    justify-content: space-evenly
+    align-items: center
+    .block-wrapper
+      flex: 0 0 50%
+      max-width: 50%
+      margin: 20px 10px
+      .block
+        min-height: 400px
+        padding: 60px
+        background: #fff
+        border-radius: 7px
+        box-shadow: 0 0 9.9px 0.1px rgba(0,0,0,0.1)
+        .item-icon
+          margin-bottom: 40px
+          span
+            display: inline-block
+            background: #f5fafe
+            width: 110px
+            height: 110px
+            line-height: 110px
+            color: #4e54c8
+            font-size: 50px
+            border: 1px solid #ececec
+            border-radius: 50%
+            text-align: center
+        h3
+          margin-bottom: 10px
+          font-size: 22px
+        &:hover
+          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)
+          color: #fff
+          background: #4e54c8
+          background: linear-gradient(-45deg, #4e54c8, #8089ff)
+
+
+.section3
+  display: flex
+  flex-flow: row nowrap
+  justify-content: space-between
+  align-items: center
+  color: #4e54c8
+  padding: 6%
+  .counter-box
+    text-align: center
+    line-height: normal
+    font-size: 36px
+    &:hover
+      transition: .5s ease-out
+      color: black
+    .icon
+      display: block
+      margin-bottom: 10px
+    h4
+      line-height: normal
+      margin: 0
+      display: block
+      &:after
+        content: '+'
+    .separator-line
+      background-color: black
+      margin: 15px auto
+      opacity: .5
+      width: 18%
+      height: 1px
+      float: none
+    p
+      font-weight: 600
+      font-size: 18px
+      line-height: 26px
+
+.section4
+  padding-top: 15%
+  display: flex
+  flex-flow: row nowrap
+  justify-content: space-around
+  align-items: center
+  .wrapper
+    width: 100%
+    margin-left: 3%
+    margin-top: -15%
+  h3
+    margin-bottom: 2%
+    font-size: 30px
+    letter-spacing: 2px
+  img
+    width: 80%
+  .accordion
+    display: block
+    height: 410px
+    .card
+      position: relative
+      display: flex
+      flex-direction: column
+      min-width: 0
+      word-wrap: break-word
+      background-clip: border-box
+      border-radius: .25rem
+      background: transparent
+      box-shadow: none
+      margin-top: 0
+      border: none
+    .card-header
+      border: 0
+      padding: 0
+      border-bottom: 1px solid rgba(255,255,255,0.15)
+      background: none
+      &:first-child
+        border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0
+    .item
+      background: #efefef
+      box-shadow: 0 5px 10px rgba(0,9,128,0.035), 0 7px 18px rgba(0,9,128,0.05)
+      color: #6f6f6f
+      position: relative
+      border: none
+      display: block
+      width: 100%
+      text-align: left
+      white-space: normal
+      border-radius: 4px
+      padding: 15px 50px 15px 15px
+      text-decoration: none
+      font-size: 15px
+      transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out
+      &:focus
+        outline: none
+      &.collapsed
+        box-shadow: none
+      &:not(:disabled):not(.disabled)
+        cursor: pointer
+      &:after
+        background: none
+        border: 1px solid #4e54c8
+        border-radius: 50%
+        content: "-"
+        right: 15px
+        left: inherit
+        font-size: 18px
+        height: 25px
+        line-height: 21px
+        transform: none
+        width: 25px
+        top: 15px
+        position: absolute
+        color: #4e54c8
+        text-align: center
+        padding-left: 2px
+        letter-spacing: 2px
+      &.collapsed:after
+        background: none
+        border: 1px solid #4e54c8
+        border-radius: 50%
+        content: "+"
+        right: 15px
+        left: inherit
+        font-size: 18px
+        line-height: 21px
+        height: 25px
+        transform: none
+        width: 25px
+        top: 15px
+        text-align: center
+        padding-left: 0
+        letter-spacing: -1px
+    .collapse
+      height: 0
+      display: block
+      opacity: 0
+      transition: all .2s ease-in-out
+      &.show
+        height: 135px
+        opacity: 1
+    .card-body
+      padding: 20px
+      font-size: 14px
+      font-weight: 300
+      text-align: left
+      flex: 1 1 auto
+
+.section5
+  padding: 6% 0
+  text-align: center
+  .heading
+    h2
+      padding-top: 5%
+      padding-bottom: 1%
+      line-height: 140%
+      font-weight: 600
+      color: black
+      font-size: 35px
+    p
+      color: #4e54c8
+      padding-bottom: 3%
+  .price-blocks
+    display: flex
+    flex-flow: row nowrap
+    justify-content: space-evenly
+    align-items: center
+    .block
+      display: block
+      flex: 0 0 40%
+      max-width: 40%
+      position: relative
+      width: 100%
+      .item
+        padding: 0 0 30px 0
+        background: #fff
+        border-radius: 5px
+        transition: all .3s
+        &:hover
+          box-shadow: 0 5px 40px 0 rgba(0,0,0,0.1)
+        .head
+          background: linear-gradient(-45deg, #4e54c8, #8089ff)
+          padding: 15px 0
+          h4
+            padding: 20px
+            margin: 0
+            color: #fff
+            font-weight: 600
+            font-size: 22px
+            line-height: normal
+        .value
+          padding: 32px 0 43px
+          position: relative
+          background: #f7f7f7
+          font-weight: bold
+          border-bottom: 1px solid #eaeaea
+          h3
+            margin: 0
+            font-weight: bold
+            color: #6f6f6f
+            font-size: 32px
+          sup
+            font-size: 18px
+            top: -15px
+            margin-right: 2px
+          span
+            text-transform: uppercase
+            font-size: 12px
+          i
+            color: #fff
+            width: 50px
+            height: 50px
+            line-height: 50px
+            font-size: 20px
+            border-radius: 50%
+            position: absolute
+            bottom: -24px
+            left: 42.6%
+            z-index: 99
+            background: #4e54c8
+            background: linear-gradient(-45deg, #4e54c8, #8089ff)
+        .condition
+          text-transform: uppercase
+          margin: 56px 0 15px
+
+
+
+.btn
+  background: linear-gradient(-45deg, #4e54c8, #8089ff)
+  cursor: pointer
+  font-weight: 500
+  color: #fff
+  letter-spacing: 3px
+  font-size: 14px
+  line-height: 20px
+  padding: 14px 28px
+  border-radius: 30px
+  text-transform: uppercase
+  display: inline-block
+  vertical-align: middle
+  transform: perspective(1px) translateZ(0)
+  position: relative
+  transition: all linear 400ms
+  border: none
+  text-align: center
+  &::before
+    background: #4e54c8
+    content: ""
+    position: absolute
+    z-index: -1
+    top: 0
+    bottom: 0
+    left: 0
+    right: 0
+    display: inline-block
+    transform: scaleX(0)
+    transform-origin: 51%
+    transition-property: transform
+    transition-duration: 0.3s
+    border-radius: 22px
+    border: none
+  &:hover:before, &:active:before
+    transform: scaleX(1)
+
+footer
+  padding: 20px 0 0
+  background: #1f1f1f
+  color: #939393
+  text-align: center
+  .contacts
+    margin-bottom: 1%
+    h3
+      margin-bottom: 10px
+      color: #fff
+      font-size: 18px
+      font-weight: 500
+      line-height: 1
+      &:after
+        content: ''
+        display: block
+        width: 70px
+        height: 2px
+        background: #4e54c8
+        margin: 12px auto 0 auto
+  .footer-bar
+    font-size: 14px
+    padding-top: 10px
+    padding-bottom: 10px
+    margin-top: 30px
+    background: #191919
+
+
+
+
+@import "media" // Always at the end

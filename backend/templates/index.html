@@ -1,0 +1,289 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>TeleQtion</title>
+    <meta name="description" content="TeleQtion - Telegram Automation System">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta property="og:image" content="path/to/image.jpg">
+    <link rel="icon" href="{% static 'img/favicon/favicon.png' %}">
+
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+          integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="{% static 'css/main.min.css' %}">
+
+</head>
+
+<body>
+<div class="main-wrapper">
+    <header>
+        <div class="container">
+            <div class="navbar">
+                <div class="navbar-brand">
+                    <img src="{% static 'img/logo.png' %}" alt="logo"/>
+                </div>
+                <ul>
+                    <li><a id="home-btn" href="#section1" class="active">Home</a></li>
+                    <li><a id="svcs-btn" href="#section2">Services</a></li>
+                    <li><a id="faq-btn" href="#section4">FAQ</a></li>
+                    <li><a id="pricing-btn" href="#section5">Pricing</a></li>
+                    <li><a class="nav-btn">Sign Up</a></li>
+                </ul>
+
+                <button class="nav-toggle">
+                    <span class="bar-top"></span>
+                    <span class="bar-mid"></span>
+                    <span class="bar-bot"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+    <div class="block1-wrapper">
+        <div class="container">
+            <section id="section1" class="section1">
+                <div>
+                    <h1>TeleQtion - Telegram Automation Platform</h1>
+                    <p>Platform brings innovative experience for Telegram marketing.</p>
+                    <a class="btn" href="#">Sign Up</a>
+                </div>
+                <img src="{% static 'img/section1-img.png' %}" alt="section1 image">
+            </section>
+            <img class="section1-bg" src="{% static 'img/section1-bg.svg' %}" alt="section1 background">
+        </div>
+    </div>
+    <div class="container">
+        <section id="section2" class="section2">
+            <div class="heading">
+                <p>What can you do?</p>
+                <h2>We Provide Awesome Services</h2>
+            </div>
+            <div class="features">
+                <div class="block-wrapper">
+                    <div class="block">
+                        <div class="item-icon"><span class="far fa-comments"></span></div>
+                        <div class="item-text">
+                            <h3>Messaging</h3>
+                            <p>
+                                Send private messages to active members of Telegram groups.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="block-wrapper">
+                    <div class="block">
+                        <div class="item-icon"><span class="fas fa-user-plus"></span></div>
+                        <div class="item-text">
+                            <h3>Invites</h3>
+                            <p>
+                                Invite real users from any Telegram groups to your group.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="block1-wrapper">
+        <div class="container">
+            <section id="section3" class="section3">
+                <div class="counter-box">
+                    <span class="icon"><i class="far fa-smile"></i></span>
+                    <h4 class="countup">300</h4>
+                    <div class="separator-line"></div>
+                    <p>Satisfied Customers</p>
+                </div>
+                <div class="counter-box">
+                    <span class="icon"><i class="far fa-envelope"></i></span>
+                    <h4 class="countup">10000</h4>
+                    <div class="separator-line"></div>
+                    <p>Sent Messages</p>
+                </div>
+                <div class="counter-box">
+                    <span class="icon"><i class="fas fa-user-check"></i></span>
+                    <h4 class="countup">15000</h4>
+                    <div class="separator-line"></div>
+                    <p>Successful Invites</p>
+                </div>
+            </section>
+        </div>
+    </div>
+
+
+    <div class="container">
+        <section id="section4" class="section4">
+            <img src="{% static 'img/faq-img.png' %}" alt="faq image">
+            <div class="wrapper">
+                <h3>FAQ</h3>
+                <div class="accordion">
+                    <div class="card">
+                        <div class="card-header" id="headingOne">
+                            <h5>
+                                <button class="item collapsed" data-target="#collapseOne">
+                                    How does it work ?
+                                </button>
+                            </h5>
+                        </div>
+                        <div id="collapseOne" class="collapse">
+                            <div class="card-body">
+                                You have 2 options: to add your phone numbers, that will
+                                be used for messaging and inviting, or to use ours. In this case, price per message or
+                                invite is a little bit higher, but you don't have to worry where to get new phone numbers.
+                                Advertising your business has never been easier!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" id="headingTwo">
+                            <h5>
+                                <button class="item collapsed" data-target="#collapseTwo">
+                                    Is Telegram marketing a good solution for me ?
+                                </button>
+                            </h5>
+                        </div>
+                        <div id="collapseTwo" class="collapse">
+                            <div class="card-body">
+                                Sure! For example, in comparison to Google Adwords it's much cheaper and faster.
+                                Do you want to grow your business without big budgets on marketing campaigns?
+                                Then you should definitely give it a shot.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" id="headingThree">
+                            <h5>
+                                <button class="item collapsed" data-target="#collapseThree">
+                                    Is it completely safe?
+                                </button>
+                            </h5>
+                        </div>
+                        <div id="collapseThree" class="collapse">
+                            <div class="card-body">
+                                <b>TeleQtion</b> services are 100% secure and safe.
+                                Telegram is a high secure platform that allows users to communicate,
+                                so that it provides you a safe way to promote your services
+                                and products to your customers. We keep our promotion services confidential,
+                                we don't need your account credentials.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" id="headingFour">
+                            <h5>
+                                <button class="item collapsed" data-target="#collapseFour">
+                                    How many invites and messages can I do with 1 phone number?
+                                </button>
+                            </h5>
+                        </div>
+                        <div id="collapseFour" class="collapse">
+                            <div class="card-body">
+                                According to our experience, you can get up to 50 invites or send
+                                private messages up to 50 users using 1 phone number. Then the phone number gets
+                                banned by Telegram
+                                for some time (usually ~ 1 week) and you can use it again.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" id="headingFive">
+                            <h5>
+                                <button class="item collapsed" data-target="#collapseFive">
+                                    Do you provide real Telegram users, not Fake Bots?
+                                </button>
+                            </h5>
+                        </div>
+                        <div id="collapseFive" class="collapse">
+                            <div class="card-body">
+                                We deliver only real Telegram users.
+                                Our platform even allows you to filter group participants by their
+                                activity before messaging or inviting.
+                                For example, you can choose to reach only users, who were active in
+                                the source group during last 24h or last week.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+
+    <div class="block1-wrapper">
+        <div class="container">
+            <section id="section5" class="section5">
+                <div class="heading">
+                    <h2>Pricing</h2>
+                    <p>Pay as you go - it cannot be simpler!</p>
+                </div>
+                <div class="price-blocks">
+                    <div class="block">
+                        <div class="item">
+                            <div class="head">
+                                <h4>Messages & Invites</h4>
+                            </div>
+                            <div class="item-body">
+                                <div class="value">
+                                    <h3><sup>$</sup>0.03</h3>
+                                    <span>Per Message Or Invite</span>
+                                    <i class="fas fa-certificate"></i>
+                                </div>
+                                <div class="condition">
+                                    <b>Using Your Own Phone Numbers</b>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="block">
+                        <div class="item">
+                            <div class="head">
+                                <h4>Messages & Invites</h4>
+                            </div>
+                            <div class="item-body">
+                                <div class="value">
+                                    <h3><sup>$</sup>0.05</h3>
+                                    <span>Per Message Or Invite</span>
+                                    <i class="fas fa-certificate"></i>
+                                </div>
+                                <div class="condition">
+                                    <b>Using Our Phone Numbers</b>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+
+    <footer>
+        <div class="container">
+            <div class="contacts">
+                <div class="email">
+                    <h3>Email</h3>
+                    <p>contact@teleqtion.com</p>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bar">
+            <div class="container">
+                <p>© 2019 TeleQtion.</p>
+            </div>
+        </div>
+    </footer>
+
+</div>
+
+
+<script src="{% static 'js/scripts.min.js' %}"></script>
+
+</body>
+</html>
