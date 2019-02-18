@@ -8,6 +8,10 @@ class GetTaskStatusView(APIView):
     def get(self, request, task_id):
         result = AsyncResult(task_id)
         if result.ready():
-            return Response(result.result)
+            if isinstance(result.result, dict):
+                return Response(result.result)
+            return Response({'success': False,
+                             'error': _('Error occured. Please, try again '
+                                        'later.')})
         else:
             return Response({'status': _('Task is still in progress.')})

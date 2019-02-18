@@ -3,23 +3,44 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext as _
+from django.db.models import Q
 
 from .serializers import TelegramAccountSerializer, \
     TelegramAccountConfirmSerializer, \
     TelegramAccountCodeRequestSerializer
 from .models import TelegramAccount
-from .permissions import IsOwner
+from api.v1.permissions import IsOwner
+from api.v1.pagination import SmallResultsSetPagination
 from .tasks import confirm_account, send_code_request
 
 
 class TelegramAccountViewSet(viewsets.ModelViewSet):
     serializer_class = TelegramAccountSerializer
     permission_classes = [permissions.IsAuthenticated, IsOwner]
+    pagination_class = SmallResultsSetPagination
 
     def get_queryset(self):
-        return TelegramAccount.objects.filter(
+        queryset = TelegramAccount.objects.filter(
             user=self.request.user
         ).order_by('-added_at')
+        phone_number = self.request.query_params.get('phone_number')
+        active = self.request.query_params.get('active')
+        confirmed = self.request.query_params.get('confirmed')
+        if phone_number:
+            phone_number = phone_number.strip()
+            queryset = queryset.filter(
+                Q(phone_number__icontains=phone_number) |
+                Q(phone_number__icontains='+'+phone_number)
+            )
+        if active:
+            queryset = queryset.filter(
+                active=True if active == 't' else False
+            )
+        if confirmed:
+            queryset = queryset.filter(
+                confirmed=True if confirmed == 't' else False
+            )
+        return queryset
 
     @action(detail=False, methods=['post'],
             serializer_class=TelegramAccountCodeRequestSerializer,

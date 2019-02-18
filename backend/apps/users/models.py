@@ -1,5 +1,5 @@
 from django.contrib.auth.models import AbstractUser
-from django.db import models
+from django.db import models, transaction
 from django.utils.translation import gettext_lazy as _
 
 from .managers import UserManager
@@ -13,9 +13,14 @@ class User(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
-    email = models.EmailField(_('email address'), unique=True)
-
+    email = models.EmailField(_('Email Address'), unique=True)
+    balance = models.FloatField(_('Balance'), default=0)
     objects = UserManager()
 
     def __str__(self):
         return 'User [{}]'.format(self.email)
+
+    @transaction.atomic
+    def update_balance(self, balance):
+        User.objects.select_for_update().filter(pk=self.pk).\
+            update(balance=balance)

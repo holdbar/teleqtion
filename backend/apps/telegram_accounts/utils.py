@@ -1,8 +1,11 @@
 import random
 import time
 
+import asyncio
 import requests
 from lxml import etree
+
+from django.conf import settings
 
 
 user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) ' \
@@ -39,7 +42,18 @@ def get_random_user_data():
 
 def get_new_api_credentials(client, phone_number):
     try:
+        proxies = {
+            "http": "http://{}:{}@{}:{}".format(settings.PROXY_USERNAME,
+                                                settings.PROXY_PASSWORD,
+                                                settings.PROXY_HOST,
+                                                settings.PROXY_PORT),
+            "https": "https://{}:{}@{}:{}".format(settings.PROXY_USERNAME,
+                                                  settings.PROXY_PASSWORD,
+                                                  settings.PROXY_HOST,
+                                                  settings.PROXY_PORT)
+        }
         s = requests.Session()
+        s.proxies = proxies
         s.headers.update({'User-Agent': user_agent, 'Connection': 'close'})
 
         # get cookies
@@ -50,21 +64,21 @@ def get_new_api_credentials(client, phone_number):
                    data={'phone': phone_number}).json()
         random_hash = r.get('random_hash')
         if not random_hash:
-            error = 'Error getting code from my.telegram.org'
+            error = _('Error getting code from my.telegram.org')
             return {'error': error}
 
         time.sleep(5)
-
+        print('after sleep')
         # get code from telegram
         messages = client.get_messages(777000, 3)
         code = messages[0].message.split('\n')[1]
-
+        print('tg code : {}'.format(code))
         # login to my.telegram.org
         s.post('https://my.telegram.org/auth/login',
                data={'phone': phone_number,
                      'random_hash': random_hash,
                      'password': code})
-
+        print('logged in')
         # create app
         r = s.get('https://my.telegram.org/apps')
         if not etree.HTML(r.text).xpath('//*[@id="app_edit_form"]/div[1]/div[1]/span/strong'):
@@ -77,6 +91,8 @@ def get_new_api_credentials(client, phone_number):
                          'app_platform': 'android',
                          'app_desc': 'automated app'
                          })
+        time.sleep(3)
+        print('app created')
         r = s.get('https://my.telegram.org/apps')
         api_id = int(etree.HTML(r.text).xpath('//strong')[0].text)
         api_hash = etree.HTML(r.text).xpath('//span[@class="form-control '
@@ -84,5 +100,6 @@ def get_new_api_credentials(client, phone_number):
 
         return {'api_id': api_id, 'api_hash': api_hash}
 
-    except:
-        return {'error': 'Sign in / Sign up failed.'}
+    except Exception as e:
+        print(e)
+        return {'error': _('Sign in / Sign up failed.')}

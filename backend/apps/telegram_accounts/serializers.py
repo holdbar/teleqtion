@@ -10,13 +10,15 @@ class TelegramAccountSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TelegramAccount
-        exclude = ('phone_code_hash', 'session', 'api_id', 'api_hash')
+        fields = ('id', 'user', 'phone_number', 'confirmed', 'active',
+                  'error_name', 'error_datetime', 'last_used', 'added_at',
+                  'invites_count', 'messages_count')
 
 
 class TelegramAccountConfirmSerializer(serializers.Serializer):
-    id = serializers.IntegerField()
+    id = serializers.UUIDField()
     code = serializers.IntegerField()
 
 
 class TelegramAccountCodeRequestSerializer(serializers.Serializer):
-    id = serializers.IntegerField()
+    id = serializers.UUIDField()

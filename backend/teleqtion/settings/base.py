@@ -17,12 +17,17 @@ INSTALLED_APPS = [
     'rest_auth.registration',
     'allauth',
     'allauth.account',
+    'corsheaders',
 
     'apps.users',
     'apps.telegram_accounts',
+    'apps.actions',
+    'apps.telegram_entities',
+    'apps.payments.crypto_payments',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -100,5 +105,12 @@ REST_AUTH_SERIALIZERS = {
 REST_AUTH_REGISTER_SERIALIZERS = {
     'REGISTER_SERIALIZER': 'apps.users.serializers.CustomRegisterSerializer',
 }
-
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 5
+}
 # APPEND_SLASH = False
+
+# Prices
+PRICE_USING_OWN_NUMBERS = 0.04
+PRICE_USING_SYSTEM_NUMBERS = 0.06

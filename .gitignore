@@ -5,3 +5,9 @@ __pycache__/
 node_modules/
 .DS_Store
 .idea/
+dump.rdb
+node_modules/
+/dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
