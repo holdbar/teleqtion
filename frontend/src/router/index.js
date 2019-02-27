@@ -5,8 +5,9 @@ import Scrapping from '../components/Scrapping'
 import Inviting from "../components/Inviting"
 import Groups from "../components/Groups";
 import Accounts from "../components/Accounts";
+import Messaging from "../components/Messaging";
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   mode: 'history',
@@ -35,6 +36,12 @@ export default new Router({
       path: '/inviting',
       name: 'Inviting',
       component: Inviting
-    }
+    },
+    {
+      path: '/messaging',
+      name: 'Messaging',
+      component: Messaging
+    },
+
   ]
 })

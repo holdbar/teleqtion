@@ -10,7 +10,7 @@
       <el-input v-model="newAccount.phone_number" @keyup.enter.native="onSubmit" placeholder="+1999999999999"></el-input>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="onSubmit">Save</el-button>
+      <el-button type="primary" @click="onSubmit">Add</el-button>
     </el-form-item>
   </el-form>
 

@@ -25,7 +25,7 @@ class StartInvitingView(views.APIView):
                 user_id=request.user.pk,
                 source_group_id=serializer.data['source_group_id'],
                 target_group_id=serializer.data['target_group_id'],
-                numbers_list=serializer.data.get('user_numbers_list'),
+                # numbers_list=serializer.data.get('user_numbers_list'),
                 use_system_numbers=serializer.data['use_system_numbers']
             )
             return Response({'status': _('Process started.'),

@@ -25,6 +25,40 @@ class TelegramContactSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class TelegramContactListSerializer(serializers.Serializer):
+    user = serializers.HiddenField(
+        default=serializers.CurrentUserDefault()
+    )
+    id_list = serializers.ListField()
+
+    class Meta:
+        model = TelegramContact
+        fields = ('user', 'id_list')
+
+
+class TelegramContactByGroupSerializer(serializers.Serializer):
+    user = serializers.HiddenField(
+        default=serializers.CurrentUserDefault()
+    )
+    group_id = serializers.UUIDField()
+
+    class Meta:
+        model = TelegramContact
+        fields = ('user', 'group_id')
+
+
+class TelegramContactsNotInvitedSerializer(serializers.Serializer):
+    user = serializers.HiddenField(
+        default=serializers.CurrentUserDefault()
+    )
+    source_group_id = serializers.UUIDField()
+    target_group_id = serializers.UUIDField()
+
+    class Meta:
+        model = TelegramContact
+        fields = ('user', 'source_group_id', 'target_group_id')
+
+
 class MessageSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(
         default=serializers.CurrentUserDefault()

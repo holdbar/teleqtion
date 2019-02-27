@@ -31,16 +31,6 @@
         <i class="el-icon-message"></i>
         <span>Messaging</span>
       </el-menu-item>
-      <el-submenu index="5">
-        <template slot="title">
-          <i class="el-icon-setting"></i>
-          <span>My Account</span>
-        </template>
-          <el-menu-item index="/settings">Settings</el-menu-item>
-          <el-menu-item index="/balance">Balance</el-menu-item>
-          <el-menu-item index="/change-password">Change Password</el-menu-item>
-          <el-menu-item index="/logout">Logout</el-menu-item>
-      </el-submenu>
     </el-menu>
   </el-row>
 </template>

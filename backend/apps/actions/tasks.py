@@ -41,8 +41,13 @@ def invites_task(limit, user_id, source_group_id, target_group_id,
                                                          is_used_now=False)
     else:
         price = settings.PRICE_USING_OWN_NUMBERS
-        active_accounts = TelegramAccount.objects.filter(id__in=numbers_list,
-                                                         user=user,
+        # active_accounts = TelegramAccount.objects.filter(id__in=numbers_list,
+        #                                                  user=user,
+        #                                                  system=False,
+        #                                                  confirmed=True,
+        #                                                  active=True,
+        #                                                  is_used_now=False)
+        active_accounts = TelegramAccount.objects.filter(user=user,
                                                          system=False,
                                                          confirmed=True,
                                                          active=True,

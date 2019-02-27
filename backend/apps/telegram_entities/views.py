@@ -1,14 +1,18 @@
 import uuid
 
 from django.db.models import Q
-from rest_framework import viewsets, permissions, mixins
-
+from rest_framework import viewsets, permissions, mixins, status
+from rest_framework.decorators import action
+from rest_framework.response import Response
 from api.v1.permissions import IsOwner
 from api.v1.pagination import SmallResultsSetPagination, StandardResultsSetPagination
+from apps.actions.models import InviteEvent
 
 from .models import TelegramContact, TelegramGroup, Message
 from .serializers import TelegramGroupSerializer,\
-    TelegramContactSerializer, MessageSerializer
+    TelegramContactSerializer, MessageSerializer, \
+    TelegramContactListSerializer, TelegramContactByGroupSerializer, \
+    TelegramContactsNotInvitedSerializer
 
 
 class TelegramGroupViewSet(mixins.ListModelMixin,
@@ -36,7 +40,7 @@ class TelegramContactViewSet(mixins.ListModelMixin,
                              viewsets.GenericViewSet):
     serializer_class = TelegramContactSerializer
     permission_classes = [permissions.IsAuthenticated, IsOwner]
-    pagination_class = StandardResultsSetPagination
+    pagination_class = SmallResultsSetPagination
 
     def get_queryset(self):
         queryset = TelegramContact.objects.filter(
@@ -57,9 +61,62 @@ class TelegramContactViewSet(mixins.ListModelMixin,
                     group__id=group
                 )
             except ValueError:
-                pass
+                queryset = list()
 
         return queryset
+
+    @action(detail=False, methods=['post'],
+            serializer_class=TelegramContactListSerializer,
+            url_path='delete-list')
+    def delete_list(self, request):
+        serializer = TelegramContactListSerializer(data=request.data,
+                                                   context={'request': request})
+        if serializer.is_valid():
+            TelegramContact.objects.filter(id__in=serializer.data['id_list']).delete()
+            return Response(status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors,
+                            status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=False, methods=['post'],
+            serializer_class=TelegramContactByGroupSerializer,
+            url_path='delete-all')
+    def delete_all(self, request):
+        serializer = TelegramContactByGroupSerializer(data=request.data,
+                                                      context={'request': request})
+        if serializer.is_valid():
+            TelegramContact.objects.filter(group__id=serializer.data['group_id']).delete()
+            return Response(status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors,
+                            status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=False, methods=['post'],
+            serializer_class=TelegramContactsNotInvitedSerializer,
+            url_path='get-not-invited-count')
+    def get_not_invited_count(self, request):
+        serializer = TelegramContactsNotInvitedSerializer(
+            data=request.data, context={'request': request}
+        )
+        if serializer.is_valid():
+            all_contacts = TelegramContact.objects.filter(
+                group__id=serializer.data['source_group_id']
+            )
+            invites = InviteEvent.objects.filter(
+                source_group__id=serializer.data['source_group_id'],
+                target_group__id=serializer.data['target_group_id'],
+                user=request.user
+            )
+            processed_contacts = [i.contact for i in invites]
+            not_processed_contacts = [i for i in all_contacts
+                                      if i not in processed_contacts]
+            return Response(
+                {'count': len(not_processed_contacts)},
+                status.HTTP_200_OK
+            )
+        else:
+            return Response(serializer.errors,
+                            status=status.HTTP_400_BAD_REQUEST)
 
 
 class MessageViewSet(viewsets.ModelViewSet):

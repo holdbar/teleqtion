@@ -6,6 +6,7 @@
           <SideMenu/>
         </el-col>
         <el-col :sm="24" :md="18" :lg="20">
+          <TopMenu/>
           <el-main>
             <router-view/>
           </el-main>
@@ -17,21 +18,18 @@
 
 <script>
   import SideMenu from './components/SideMenu.vue'
+  import TopMenu from './components/TopMenu.vue'
 
   export default {
     name: 'App',
     components: {
-      SideMenu,
+      SideMenu, TopMenu
     },
   }
 </script>
 
 <style>
   @import url('https://fonts.googleapis.com/css?family=Paytone+One');
-
-  /*html {*/
-  /*min-height: 100%;*/
-  /*}*/
 
   body {
     min-height: 100vh;
@@ -49,6 +47,10 @@
 
   .el-menu {
     border-right: 0;
+  }
+
+  .el-form-item__error {
+    position: relative;
   }
 
   .sideMenu {

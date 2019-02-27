@@ -18,6 +18,7 @@
           clearable
           placeholder="Group name or username"
           @select="handleSelectGroup"
+          @clear="handleClearGroup"
         ></el-autocomplete>
       </el-form-item>
       <el-form-item label="Use my account">
@@ -38,6 +39,7 @@
             placeholder="Phone number"
             prefix-icon="el-icon-mobile-phone"
             @select="handleSelectAccount"
+            @clear="handleClearAccount"
           ></el-autocomplete>
         </el-form-item>
       </transition>
@@ -71,6 +73,8 @@
       };
       return {
         loading: false,
+        taskId: null,
+        intervalCheck: null,
         searchGroup: '',
         searchAccount: '',
         scrapeForm: {
@@ -138,59 +142,63 @@
       },
       startScrapping() {
         this.loading = true;
-        HTTP.post('actions/scrapping/start/', {
-          id: this.confirmAccount.accountId,
-          code: this.confirmAccount.code,
-        }).then(response => {
-          if (response.status === 200) {
-            this.taskId = response.data['task_id'];
-            this.intervalCheck = setInterval(function () {
-              this.checkTaskStatus(true);
-            }.bind(this), 1000);
-          } else {
-            this.$message({
-              message: 'Error confirming account.',
-              type: 'error'
-            });
-            this.onClose();
-          }
-        }).catch(e => {
+        if (this.scrapeForm.useCustomAccount) {
+          var post_data = {
+            group_id: this.scrapeForm.selectedGroup.id,
+            telegram_account_id: this.scrapeForm.customAccount.id,
+          };
+        } else {
+          var post_data = {
+            group_id: this.scrapeForm.selectedGroup.id,
+          };
+        }
+        HTTP.post('actions/scrapping/start', post_data)
+          .then(response => {
+            if (response.status === 200) {
+              this.taskId = response.data['task_id'];
+              this.intervalCheck = setInterval(function () {
+                this.checkTaskStatus(true);
+              }.bind(this), 1000);
+            } else {
+              this.$message({
+                message: 'Failed to launch scrapping.',
+                type: 'error'
+              });
+              this.loading = false;
+            }
+          }).catch(e => {
           this.$message({
-            message: 'Error confirming account.',
+            message: 'Failed to launch scrapping.',
             type: 'error'
           });
-          this.onClose();
+          this.loading = false;
         })
       },
-      checkTaskStatus(closeOnSuccess) {
+      checkTaskStatus() {
         HTTP.get(`task-status/${this.taskId}/`)
           .then(response => {
               if ('success' in response.data) {
                 if (response.data['success'] === true) {
-                  this.activeStep++;
                   this.$message({
-                    message: 'Success!',
+                    message: 'Scrapping finished!',
                     type: 'success'
                   });
-                  this.$root.$emit('accountConfirmed');
-                  if (closeOnSuccess) {
-                    this.onClose();
-                  }
+                  this.loading = false;
                 } else {
                   this.$message({
                     message: response.data['error'],
                     type: 'error'
                   });
-                  this.onClose();
+                  this.loading = false;
                 }
                 clearInterval(this.intervalCheck);
-                this.dialogLoading = false;
+                this.loading = false;
                 this.intervalCheck = null;
               }
             }
           ).catch(e => {
           this.$message({
-            message: 'Error checking process status.',
+            message: 'Error checking scrapping status.',
             type: 'error'
           });
         });
@@ -199,12 +207,17 @@
         this.$refs['scrapeForm'].validate((valid) => {
           if (valid) {
             this.startScrapping();
-            this.$refs['scrapeForm'].resetFields();
           } else {
             return false;
           }
         });
       },
+      handleClearGroup() {
+        this.scrapeForm.selectedGroup = null;
+      },
+      handleClearAccount() {
+        this.scrapeForm.customAccount = null;
+      }
     },
     mounted() {
       this.fetchAccounts('', function () {
@@ -216,5 +229,8 @@
 <style scoped>
   .el-autocomplete {
     min-width: 50%;
+  }
+  .el-form-item__error {
+    position: relative;
   }
 </style>
