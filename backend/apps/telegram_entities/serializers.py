@@ -67,3 +67,15 @@ class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
         fields = '__all__'
+
+
+class NotMessagedSerializer(serializers.Serializer):
+    user = serializers.HiddenField(
+        default=serializers.CurrentUserDefault()
+    )
+    group_id = serializers.UUIDField()
+    message_id = serializers.UUIDField()
+
+    class Meta:
+        model = TelegramContact
+        fields = ('user', 'group_id', 'message_id')

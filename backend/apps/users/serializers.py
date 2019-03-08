@@ -1,4 +1,6 @@
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
+from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 
 from rest_auth.serializers import UserDetailsSerializer, LoginSerializer
@@ -14,8 +16,8 @@ class CustomLoginSerializer(LoginSerializer):
 class CustomUserDetailsSerializer(UserDetailsSerializer):
     class Meta:
         model = UserModel
-        fields = ('pk', 'email')
-        read_only_fields = ('email', )
+        fields = ('email', 'balance')
+        read_only_fields = ('email', 'balance')
 
 
 class CustomRegisterSerializer(RegisterSerializer):
@@ -24,6 +26,10 @@ class CustomRegisterSerializer(RegisterSerializer):
     password2 = None
 
     password = serializers.CharField(write_only=True)
+
+    def validate_password(self, value):
+        validate_password(value)
+        return value
 
     def validate(self, data):
         return data

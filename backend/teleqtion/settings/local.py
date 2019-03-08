@@ -19,8 +19,9 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 REDIS_HOST = 'localhost'
 REDIS_PORT = '6379'
-CELERY_BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/3'
-CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/3'
+REDIS_DB = '3'
+CELERY_BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/' + REDIS_DB
+CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/' + REDIS_DB
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -44,15 +45,7 @@ COINPAYMENTS_API_SECRET = '78275bdCBf3954c1C28d236782d815b971570e985bc2d34AC97e2
 COINPAYMENTS_IPN_URL = 'https://teleqtion.com/api/v1/payments/crypto/ipn/'
 COINPAYMENTS_IPN_SECRET = '392nskne1c13vnld9*3d924lk598ao40'
 COINPAYMENTS_MERCHANT_ID = 'b01331f0e1274763f55ea1069d055e5d'
-COINPAYMENTS_ACCEPTED_COINS = (
-    ('BTC', 'Bitcoin'),
-    ('LTC', 'Litecoin'),
-    ('BCH', 'Bitcoin Cash'),
-    ('DASH', 'Dash'),
-    ('ETH', 'Ether'),
-    ('NEO', 'NEO'),
-    ('QTUM', 'Qtum'),
-    ('TUSD', 'TrueUSD'),
-    ('WAVES', 'Waves'),
-)
+
+COINMARKETCAP_API_KEY = 'b7e91288-d47a-4e0f-8a4c-7c19a7e5f71d'
+
 CORS_ORIGIN_ALLOW_ALL = True

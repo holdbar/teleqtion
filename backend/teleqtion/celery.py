@@ -10,3 +10,11 @@ app = Celery('teleqtion')
 app.config_from_object('django.conf:settings', namespace='CELERY')
 
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
+
+
+app.conf.beat_schedule = {
+    'collect_cryptocurrencies_rates': {
+        'task': 'apps.payments.crypto_payments.tasks.collect_cryptocurrencies_rates',
+        'schedule': 20.0,
+    },
+}

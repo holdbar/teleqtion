@@ -18,11 +18,17 @@ class PaymentSerializer(serializers.ModelSerializer):
         default=serializers.CurrentUserDefault()
     )
     currency = serializers.CharField(source='currency_paid')
+    amount = serializers.DecimalField(decimal_places=18, max_digits=65,
+                                      coerce_to_string=False)
+    amount_paid = serializers.DecimalField(decimal_places=18, max_digits=65,
+                                           coerce_to_string=False)
+    amount_original = serializers.DecimalField(decimal_places=10, max_digits=12,
+                                               coerce_to_string=False)
 
     class Meta:
         model = Payment
         fields = ('user', 'currency', 'amount',
-                  'amount_paid', 'status', 'created_at')
+                  'amount_paid', 'amount_original', 'status', 'created_at')
 
 
 class CoinPaymentsTransactionSerializer(serializers.ModelSerializer):

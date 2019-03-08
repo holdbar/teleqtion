@@ -174,6 +174,7 @@
                   this.handleClearTargetGroup();
                   this.handleClearSourceGroup();
                   this.resetFields();
+                  this.$root.$emit('fetchBalance');
                 } else {
                   this.$message({
                     message: response.data['error'],
@@ -183,6 +184,7 @@
                   this.handleClearTargetGroup();
                   this.handleClearSourceGroup();
                   this.resetFields();
+                  this.$root.$emit('fetchBalance');
                 }
                 clearInterval(this.intervalCheck);
                 this.loading = false;

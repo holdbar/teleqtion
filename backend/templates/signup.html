@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Sign Up
+{% endblock %}
+
+{% block content %}
+    <div class="container-form">
+        <div class="wrap-form">
+            <div class="logo">
+                <a href="{% url 'index' %}">
+                    <img src="{% static 'img/logo.png' %}" alt="logo"/>
+                </a>
+            </div>
+            <form class="main-form">
+                <span class="main-form-title">
+                    Sign Up
+                </span>
+                <div class="errors">
+                </div>
+                <div class="success">
+                </div>
+                <div class="wrap-input">
+                    <input id="email" class="input" type="email" name="username" placeholder="Email" required>
+                    <span class="focus-input"></span>
+                </div>
+                <div id="email-errors"></div>
+
+                <div class="wrap-input">
+                    <input id="password" class="input" type="password" name="pass" placeholder="Password" required>
+                    <span class="focus-input"></span>
+                </div>
+                <div id="password-errors"></div>
+
+                <div class="form-btn">
+                    <button id="submitBtn" class="main-form-btn">
+                        Sign Up
+                    </button>
+                </div>
+                <div class="flex-center">
+                    <div>
+                        <a href="{% url 'login' %}">
+                            Already have an account?
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'js/signup.js' %}"></script>
+{% endblock %}

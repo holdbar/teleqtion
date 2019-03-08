@@ -5,14 +5,14 @@ from rest_framework import viewsets, permissions, mixins, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from api.v1.permissions import IsOwner
-from api.v1.pagination import SmallResultsSetPagination, StandardResultsSetPagination
-from apps.actions.models import InviteEvent
+from api.v1.pagination import SmallResultsSetPagination
+from apps.actions.models import InviteEvent, MessageEvent
 
 from .models import TelegramContact, TelegramGroup, Message
-from .serializers import TelegramGroupSerializer,\
+from .serializers import TelegramGroupSerializer, \
     TelegramContactSerializer, MessageSerializer, \
     TelegramContactListSerializer, TelegramContactByGroupSerializer, \
-    TelegramContactsNotInvitedSerializer
+    TelegramContactsNotInvitedSerializer, NotMessagedSerializer
 
 
 class TelegramGroupViewSet(mixins.ListModelMixin,
@@ -118,11 +118,58 @@ class TelegramContactViewSet(mixins.ListModelMixin,
             return Response(serializer.errors,
                             status=status.HTTP_400_BAD_REQUEST)
 
+    @action(detail=False, methods=['post'],
+            serializer_class=NotMessagedSerializer,
+            url_path='get-not-messaged-count')
+    def get_not_messaged_count(self, request):
+        serializer = NotMessagedSerializer(
+            data=request.data, context={'request': request}
+        )
+        if serializer.is_valid():
+            all_contacts = TelegramContact.objects.filter(
+                group__id=serializer.data['group_id']
+            )
+            messages = MessageEvent.objects.filter(
+                telegram_group__id=serializer.data['group_id'],
+                message__id=serializer.data['message_id'],
+                user=request.user
+            )
+            processed_contacts = [i.contact for i in messages]
+            not_processed_contacts = [i for i in all_contacts
+                                      if i not in processed_contacts]
+            return Response(
+                {'count': len(not_processed_contacts)},
+                status.HTTP_200_OK
+            )
+        else:
+            return Response(serializer.errors,
+                            status=status.HTTP_400_BAD_REQUEST)
+
 
 class MessageViewSet(viewsets.ModelViewSet):
     serializer_class = MessageSerializer
     permission_classes = [permissions.IsAuthenticated, IsOwner]
-    pagination_class = StandardResultsSetPagination
+    pagination_class = SmallResultsSetPagination
+
+    @staticmethod
+    def clean_message_text(text):
+        for_remove = (
+            ('<p>', ''),
+            ('</p>', ''),
+            ('<br>', '\n'),
+            ('&amp;', '&'),
+            ('&lt;', '<'),
+            ('&gt;', '>'),
+            ('&quot;', '"'),
+            ('&#39;', "'"),
+            (' target="_blank"', ''),
+            ('<blockquote>', '<code>'),
+            ('</blockquote>', '</code>'),
+            (' class="ql-syntax" spellcheck="false"', ''),
+        )
+        for i in for_remove:
+            text = text.replace(i[0], i[1])
+        return text
 
     def get_queryset(self):
         queryset = Message.objects.filter(
@@ -134,3 +181,11 @@ class MessageViewSet(viewsets.ModelViewSet):
                 title__icontains=search
             )
         return queryset
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.serializer_class(
+            data=request.data, context={'request': request}
+        )
+        if serializer.is_valid():
+            request.data['text'] = self.clean_message_text(request.data['text'])
+        return super(MessageViewSet, self).create(request, *args, **kwargs)

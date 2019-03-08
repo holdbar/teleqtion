@@ -1,8 +1,8 @@
 from decimal import Decimal
 
+import redis
 from rest_framework import views, permissions, generics, status
 from rest_framework.response import Response
-from django.core.serializers import serialize
 from django.conf import settings
 
 from api.v1.permissions import IsOwner
@@ -11,7 +11,12 @@ from .models import Payment
 from .utils import create_ipn_hmac
 from .exceptions import CoinPaymentsProviderError
 from .serializers import PaymentSerializer, CreatePaymentSerializer, \
-                         CoinPaymentsTransactionSerializer
+    CoinPaymentsTransactionSerializer
+
+r = redis.Redis(host=settings.REDIS_HOST,
+                port=settings.REDIS_PORT,
+                db=settings.REDIS_DB)
+REDIS_PREFIX = 'RATE:'
 
 
 class PaymentViewSet(generics.ListAPIView):
@@ -25,6 +30,18 @@ class PaymentViewSet(generics.ListAPIView):
         ).order_by('-created_at')
 
 
+class CurrenciesView(views.APIView):
+    def get(self, request):
+        data = list()
+        for currency in settings.COINPAYMENTS_ACCEPTED_COINS:
+            data.append({
+                'symbol': currency[0],
+                'name': currency[1],
+                'price': round(float(r.get(REDIS_PREFIX + currency[0] + ':USD')), 4)
+            })
+        return Response(data)
+
+
 class CreatePaymentView(views.APIView):
     serializer_class = CreatePaymentSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -33,6 +50,13 @@ class CreatePaymentView(views.APIView):
         serializer = self.serializer_class(data=request.data,
                                            context={'request': request})
         if serializer.is_valid():
+            if serializer.data['amount'] < settings.MIN_PAYMENT_AMOUNT:
+                return Response(
+                    {'sucess': False,
+                     'error': 'Minimum purchase: '
+                              '{} USD'.format(settings.MIN_PAYMENT_AMOUNT)},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
             payment = Payment(
                 user=request.user,
                 currency_paid=serializer.data['currency'],
@@ -81,14 +105,14 @@ class IpnView(views.APIView):
             if payment.status != Payment.PAYMENT_STATUS_PAID:
                 payment_status = int(request.POST['status'])
                 if payment_status == 2 or payment_status >= 100:
-                    payment.amount_paid = payment.amount
+                    payment.amount_paid = Decimal(request.POST['received_amount'])
                 elif payment_status == -1:
                     payment.status = Payment.PAYMENT_STATUS_TIMEOUT
                 else:
                     payment.amount_paid = Decimal(request.POST['received_amount'])
-                if payment.amount_paid == payment.amount:
+                if payment.amount_paid >= payment.amount_original:
                     payment.status = Payment.PAYMENT_STATUS_PAID
                     payment.user.update_balance(
-                        payment.user.balance+payment.amount_currency_original
+                        payment.user.balance + payment.amount
                     )
                 payment.save()

@@ -7,7 +7,7 @@
       <div class="logo">
         <span>TeleQtion</span>
       </div>
-      <el-menu-item index="/">
+      <el-menu-item index="/app">
         <i class="el-icon-menu"></i>
         <span>Dashboard</span>
       </el-menu-item>

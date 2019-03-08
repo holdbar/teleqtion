@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     'rest_auth.registration',
     'allauth',
     'allauth.account',
+    'allauth.socialaccount',
     'corsheaders',
 
     'apps.users',
@@ -87,16 +88,23 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
+MEDIA_URL = '/uploads/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads/')
+FILE_UPLOAD_MAX_MEMORY_SIZE = 5324800
+
 AUTH_USER_MODEL = 'users.User'
 
 SITE_ID = 1
 
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 360
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_USER_DISPLAY = 'users.utils.get_user_display'
+ACCOUNT_ADAPTER = 'users.adapters.CustomAccountAdapter'
 
 REST_AUTH_SERIALIZERS = {
     'LOGIN_SERIALIZER': 'apps.users.serializers.CustomLoginSerializer',
@@ -114,3 +122,15 @@ REST_FRAMEWORK = {
 # Prices
 PRICE_USING_OWN_NUMBERS = 0.04
 PRICE_USING_SYSTEM_NUMBERS = 0.06
+MIN_PAYMENT_AMOUNT = 5.0
+
+COINPAYMENTS_ACCEPTED_COINS = (
+    ('BTC', 'Bitcoin'),
+    ('LTC', 'Litecoin'),
+    ('BCH', 'Bitcoin Cash'),
+    ('DASH', 'Dash'),
+    ('ETH', 'Ether'),
+    ('QTUM', 'Qtum'),
+    ('TUSD', 'TrueUSD'),
+    ('WAVES', 'Waves'),
+)

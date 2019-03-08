@@ -51,7 +51,8 @@ class StartMessagingView(views.APIView):
                 limit=serializer.data['limit'],
                 user_id=request.user.pk,
                 group_id=serializer.data['group_id'],
-                numbers_list=serializer.data.get('user_numbers_list'),
+                message_id=serializer.data['message_id'],
+                # numbers_list=serializer.data.get('user_numbers_list'),
                 use_system_numbers=serializer.data['use_system_numbers']
             )
             return Response({'status': _('Process started.'),

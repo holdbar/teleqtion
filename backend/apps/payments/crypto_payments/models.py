@@ -81,6 +81,9 @@ class Payment(models.Model):
     def amount_left(self):
         return self.amount - self.amount_paid
 
+    def amount_original(self):
+        return self.provider_tx.amount
+
     def is_cancelled(self):
         if self.provider_tx:
             return self.provider_tx.timeout < timezone.now()

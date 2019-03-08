@@ -6,6 +6,7 @@ import Inviting from "../components/Inviting"
 import Groups from "../components/Groups";
 import Accounts from "../components/Accounts";
 import Messaging from "../components/Messaging";
+import Balance from "../components/Balance";
 
 Vue.use(Router);
 
@@ -13,7 +14,7 @@ export default new Router({
   mode: 'history',
   routes: [
     {
-      path: '/',
+      path: '/app',
       name: 'Dashboard',
       component: Dashboard
     },
@@ -41,6 +42,11 @@ export default new Router({
       path: '/messaging',
       name: 'Messaging',
       component: Messaging
+    },
+    {
+      path: '/balance',
+      name: 'Balance',
+      component: Balance
     },
 
   ]

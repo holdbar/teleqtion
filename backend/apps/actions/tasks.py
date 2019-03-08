@@ -307,8 +307,13 @@ def messages_task(limit, user_id, group_id, message_id,
                                                          is_used_now=False)
     else:
         price = settings.PRICE_USING_OWN_NUMBERS
-        active_accounts = TelegramAccount.objects.filter(id__in=numbers_list,
-                                                         user=user,
+        # active_accounts = TelegramAccount.objects.filter(id__in=numbers_list,
+        #                                                  user=user,
+        #                                                  system=False,
+        #                                                  confirmed=True,
+        #                                                  active=True,
+        #                                                  is_used_now=False)
+        active_accounts = TelegramAccount.objects.filter(user=user,
                                                          system=False,
                                                          confirmed=True,
                                                          active=True,
@@ -354,7 +359,7 @@ def messages_task(limit, user_id, group_id, message_id,
                     .order_by('priority')
                     if c not in processed_contacts]
 
-        # invite contacts
+        # send messages to contacts
         for contact in contacts:
             if messaged >= limit:
                 client.disconnect()
@@ -366,7 +371,13 @@ def messages_task(limit, user_id, group_id, message_id,
                 return {'success': False, 'error': _('Not enough funds. Please, '
                                                      'refill your balance.')}
             try:
-                client.send_message(contact.username, message.text)
+                if message.file:
+                    client.send_message(contact.username, message.text,
+                                        file=message.file.path,
+                                        link_preview=message.link_preview)
+                else:
+                    client.send_message(contact.username, message.text,
+                                        link_preview=message.link_preview)
                 messaged += 1
                 user.update_balance(user.balance - price)
                 MessageEvent.objects.create(user=user,

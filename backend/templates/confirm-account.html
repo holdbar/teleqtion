@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Account Confirmation
+{% endblock %}
+
+{% block content %}
+    <div style="padding-top: 30px">
+        <div class="success"></div>
+        <div class="errors"></div>
+        <div class="wait">
+            Please, wait...
+        </div>
+        <div class="redirect">
+            Now you can login and use the system.
+            You will be redirected to login page in 3 seconds.
+        </div>
+    </div>
+    <input id="redirect-url" hidden value="{% url 'login' %}">
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'js/confirm-account.js' %}"></script>
+{% endblock %}
