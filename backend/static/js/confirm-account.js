@@ -19,8 +19,6 @@ function submitConfirmKey() {
         showSuccess();
         redirectToLogin();
     }).catch(e => {
-        console.log('error');
-        console.log(JSON.stringify(e.response));
         showErrors();
     });
 }

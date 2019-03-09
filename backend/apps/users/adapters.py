@@ -12,4 +12,4 @@ class CustomAccountAdapter(DefaultAccountAdapter):
         url = reverse(
             "confirm_account",
             args=[emailconfirmation.key])
-        return current_site + url
+        return current_site + url[1:]

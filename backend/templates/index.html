@@ -35,7 +35,7 @@
                     <li><a id="svcs-btn" href="#section2">Services</a></li>
                     <li><a id="faq-btn" href="#section4">FAQ</a></li>
                     <li><a id="pricing-btn" href="#section5">Pricing</a></li>
-                    <li><a class="nav-btn" href="/signup">Sign Up</a></li>
+                    <li><a class="nav-btn" href="{% url 'signup' %}">Sign Up</a></li>
                 </ul>
 
                 <button class="nav-toggle">
@@ -52,7 +52,7 @@
                 <div>
                     <h1>TeleQtion - Telegram Automation Platform</h1>
                     <p>Platform brings innovative experience for Telegram marketing.</p>
-                    <a class="btn" href="#">Sign Up</a>
+                    <a class="btn" href="{% url 'signup' %}">Sign Up</a>
                 </div>
                 <img src="{% static 'img/section1-img.png' %}" alt="section1 image">
             </section>

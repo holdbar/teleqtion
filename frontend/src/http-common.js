@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 // const token = localStorage.getItem('token');
-const token = '53da78d6523ce1ac722232910ae164dd19dd0634';
+const token = '8dc72581f7da420e36cf6b0da2da97a5c0971869';
 if (!token) {
   window.location.replace("http://localhost:8000/login/");
 }
