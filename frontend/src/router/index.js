@@ -7,6 +7,7 @@ import Groups from "../components/Groups";
 import Accounts from "../components/Accounts";
 import Messaging from "../components/Messaging";
 import Balance from "../components/Balance";
+import PageNotFound from "../components/PageNotFound";
 
 Vue.use(Router);
 
@@ -47,6 +48,11 @@ export default new Router({
       path: '/balance',
       name: 'Balance',
       component: Balance
+    },
+    {
+      path: '*',
+      name: 'PageNotFound',
+      component: PageNotFound
     },
 
   ]

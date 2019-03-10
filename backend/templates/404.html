@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Page Not Found
+{% endblock %}
+
+{% block content %}
+    <div class="container-form">
+        <div class="wrap-form" style="text-align: center">
+            <div class="logo">
+                <a href="{% url 'index' %}">
+                    <img src="{% static 'img/logo.png' %}" alt="logo"/>
+                </a>
+            </div>
+            <h2>Ooops! Page not found :(</h2>
+        </div>
+    </div>
+{% endblock %}

@@ -1,4 +1,4 @@
-const url = 'http://localhost:8000/api/v1/';
+const BASE_URL = window.location.protocol + "//" + window.location.host + "/" + 'api/v1/';
 
 const success_div = document.querySelector('.success');
 const errors_div = document.querySelector('.errors');
@@ -35,7 +35,7 @@ function onSubmit() {
 
     wait_div.style.display = 'block';
 
-    axios.post(url + 'auth/password/reset/confirm/', {
+    axios.post(BASE_URL + 'auth/password/reset/confirm/', {
         new_password1: password1_input.value,
         new_password2: password2_input.value,
         uid: uid,

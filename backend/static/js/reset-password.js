@@ -1,4 +1,4 @@
-const url = 'http://localhost:8000/api/v1/';
+const BASE_URL = window.location.protocol + "//" + window.location.host + "/" + 'api/v1/';
 
 const success_div = document.querySelector('.success');
 const errors_div = document.querySelector('.errors');
@@ -6,7 +6,7 @@ const email_input = document.getElementById("email");
 
 
 function onSubmit() {
-    axios.post(url + 'auth/password/reset/', {
+    axios.post(BASE_URL + 'auth/password/reset/', {
         email: email_input.value,
     }).then(response => {
         showSuccess(response.data.detail);

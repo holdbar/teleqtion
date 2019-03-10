@@ -6,6 +6,7 @@ from api.v1.permissions import IsOwner
 from .serializers import StartInvitingSerializer, \
     StartMessagingSerializer, StartScrappingSerializer
 from .tasks import invites_task, messages_task, scrape_task
+from .models import InviteEvent, MessageEvent
 
 
 class StartInvitingView(views.APIView):
@@ -80,3 +81,28 @@ class StartScrappingView(views.APIView):
         else:
             return Response(serializer.errors,
                             status=status.HTTP_400_BAD_REQUEST)
+
+
+class StatisticsView(views.APIView):
+    permission_classes = [permissions.IsAuthenticated, ]
+
+    def get(self, request):
+        messages = MessageEvent.objects.filter(
+            user=request.user
+        )
+        invites = InviteEvent.objects.filter(
+            user=request.user
+        )
+        data = {
+            'invites': {
+                'total': len(invites),
+                'success': len(invites.filter(success=True)),
+                'error': len(invites.filter(success=False))
+            },
+            'messages': {
+                'total': len(messages),
+                'success': len(messages.filter(success=True)),
+                'error': len(messages.filter(success=False))
+            }
+        }
+        return Response(data)

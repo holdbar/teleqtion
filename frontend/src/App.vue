@@ -24,7 +24,7 @@
     name: 'App',
     components: {
       SideMenu, TopMenu
-    },
+    }
   }
 </script>
 

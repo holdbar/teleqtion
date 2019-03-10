@@ -7,8 +7,13 @@ node_modules/
 .idea/
 dump.rdb
 node_modules/
-/dist/
+dist/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 celerybeat*
+app.css
+vendor.js
+app.js
+element-icons.ttf
+manifest.js

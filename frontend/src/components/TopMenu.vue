@@ -4,15 +4,15 @@
              class="topMenu"
              :default-active=$route.path
              :router=true>
-      <el-submenu index="3">
+      <el-submenu index="3" class="topmenu-item">
         <template slot="title">Account</template>
         <el-menu-item index="" @click="passwordDialogVisible = true">Change Password</el-menu-item>
         <el-menu-item index="" @click="logoutDialogVisible = true">Logout</el-menu-item>
       </el-submenu>
-      <el-menu-item index="/balance">
+      <el-menu-item index="/balance" class="topmenu-item">
         Balance
       </el-menu-item>
-      <el-menu-item index="" class="balanceTag">
+      <el-menu-item index="" class="balanceTag topmenu-item">
         <el-tag v-if="this.balance > 0" type="success" :hit=true>{{ this.balance }} $</el-tag>
         <el-tag v-else type="warning" :hit=true>{{ this.balance }} $</el-tag>
       </el-menu-item>
@@ -64,7 +64,7 @@
 
 
 <script>
-  import {HTTP} from '../http-common';
+  import {HTTP, LOGIN_URL} from '../http-common';
 
   export default {
     data() {
@@ -154,7 +154,7 @@
             });
         }
         localStorage.removeItem('token');
-        window.location.href = 'http://localhost:8000/';
+        window.location.href = LOGIN_URL;
       },
       submitNewPassword() {
         HTTP.post('auth/password/change/', {
@@ -231,7 +231,7 @@
     width: 100%;
   }
 
-  .el-menu-item, .el-submenu {
+  .el-menu--horizontal > .el-menu-item, .el-menu--horizontal > .el-submenu {
     float: right;
   }
 

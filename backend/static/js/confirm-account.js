@@ -1,4 +1,4 @@
-const url = 'http://localhost:8000/api/v1/';
+const BASE_URL = window.location.protocol + "//" + window.location.host + "/" + 'api/v1/';
 
 const redirect_info_div = document.querySelector('.redirect');
 const wait_div = document.querySelector('.wait');
@@ -13,7 +13,7 @@ function getKeyFromUrl() {
 }
 
 function submitConfirmKey() {
-    axios.post(url + 'registration/verify-email/', {
+    axios.post(BASE_URL + 'registration/verify-email/', {
         key: confirmKey
     }).then(response => {
         showSuccess();

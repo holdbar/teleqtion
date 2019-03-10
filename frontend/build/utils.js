@@ -30,7 +30,7 @@ exports.cssLoaders = function (options) {
   }
 
   // generate loader string to be used with extract text plugin
-  function generateLoaders (loader, loaderOptions) {
+  function generateLoaders(loader, loaderOptions) {
     const loaders = options.usePostCSS ? [cssLoader, postcssLoader] : [cssLoader]
 
     if (loader) {
@@ -59,7 +59,7 @@ exports.cssLoaders = function (options) {
     css: generateLoaders(),
     postcss: generateLoaders(),
     less: generateLoaders('less'),
-    sass: generateLoaders('sass', { indentedSyntax: true }),
+    sass: generateLoaders('sass', {indentedSyntax: true}),
     scss: generateLoaders('sass'),
     stylus: generateLoaders('stylus'),
     styl: generateLoaders('stylus')
@@ -98,4 +98,37 @@ exports.createNotifierCallback = () => {
       icon: path.join(__dirname, 'logo.png')
     })
   }
+}
+
+exports.copyFilesAfterBuild = () => {
+  const fs = require('fs')
+  const glob = require("glob")
+
+  function copyFile(src, dest) {
+    glob(src, {}, function (er, files) {
+      fs.copyFileSync(files[0], dest);
+    })
+
+  }
+  copyFile(
+    'dist/static/css/app.*.css',
+    '../backend/static/css/app.css'
+  );
+  copyFile(
+    'dist/static/fonts/element-icons*.ttf',
+    '../backend/static/fonts/element-icons.ttf'
+  );
+  copyFile(
+    'dist/static/js/app*.js',
+    '../backend/static/js/app.js'
+  );
+  copyFile(
+    'dist/static/js/vendor*.js',
+    '../backend/static/js/vendor.js'
+  );
+  copyFile(
+    'dist/static/js/manifest*.js',
+    '../backend/static/js/manifest.js'
+  );
+
 }

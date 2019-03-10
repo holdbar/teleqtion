@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.views.generic import TemplateView
 from django.utils.translation import gettext_lazy as _
 
@@ -15,6 +15,7 @@ admin.site.index_title = _('Teleqtion')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include(api_v1)),
+
     path('login/', TemplateView.as_view(template_name='login.html'),
          name='login'),
     path('signup/', TemplateView.as_view(template_name='signup.html'),
@@ -30,9 +31,19 @@ urlpatterns = [
          name='password_reset_confirm'),
     path('email-sent/', TemplateView.as_view(template_name='email-sent.html'),
          name='account_email_verification_sent'),
+    path('not-found/', TemplateView.as_view(template_name='404.html'),
+         name='not-found'),
     path('', TemplateView.as_view(template_name='index.html'),
          name='index'),
+
+    # app
+    re_path('^(app/|accounts/|groups/|scrapping/|inviting/|messaging/|balance/)$',
+            TemplateView.as_view(template_name='app.html'),
+            name='app'),
 ]
+
+handler404 = TemplateView.as_view(template_name='404.html')
+
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

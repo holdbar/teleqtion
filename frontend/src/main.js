@@ -23,65 +23,65 @@ import enLocale from 'element-ui/lib/locale/lang/en'
 
 Vue.config.productionTip = false;
 
-Vue.use(Pagination,{ enLocale });
-Vue.use(Dialog,{ enLocale });
-Vue.use(Autocomplete,{ enLocale });
-Vue.use(Dropdown,{ enLocale });
-Vue.use(DropdownMenu,{ enLocale });
-Vue.use(DropdownItem,{ enLocale });
-Vue.use(Menu,{ enLocale });
-Vue.use(Submenu,{ enLocale });
-Vue.use(MenuItem,{ enLocale });
-Vue.use(MenuItemGroup,{ enLocale });
-Vue.use(Input,{ enLocale });
-Vue.use(InputNumber,{ enLocale });
-Vue.use(Radio,{ enLocale });
-Vue.use(RadioGroup,{ enLocale });
-Vue.use(RadioButton,{ enLocale });
-Vue.use(Checkbox,{ enLocale });
-Vue.use(CheckboxButton,{ enLocale });
-Vue.use(CheckboxGroup,{ enLocale });
-Vue.use(Switch,{ enLocale });
-Vue.use(Select,{ enLocale });
-Vue.use(Option,{ enLocale });
-Vue.use(OptionGroup,{ enLocale });
-Vue.use(Button,{ enLocale });
-Vue.use(ButtonGroup,{ enLocale });
-Vue.use(Table,{ enLocale });
-Vue.use(TableColumn,{ enLocale });
-Vue.use(Popover,{ enLocale });
-Vue.use(Tooltip,{ enLocale });
-Vue.use(Breadcrumb,{ enLocale });
-Vue.use(BreadcrumbItem,{ enLocale });
-Vue.use(Form,{ enLocale });
-Vue.use(FormItem,{ enLocale });
-Vue.use(Tabs,{ enLocale });
-Vue.use(TabPane,{ enLocale });
-Vue.use(Tag,{ enLocale });
-Vue.use(Alert,{ enLocale });
-Vue.use(Slider,{ enLocale });
-Vue.use(Icon,{ enLocale });
-Vue.use(Row,{ enLocale });
-Vue.use(Col,{ enLocale });
-Vue.use(Upload,{ enLocale });
-Vue.use(Progress,{ enLocale });
-Vue.use(Badge,{ enLocale });
-Vue.use(Card,{ enLocale });
-Vue.use(Steps,{ enLocale });
-Vue.use(Step,{ enLocale });
-Vue.use(Carousel,{ enLocale });
-Vue.use(CarouselItem,{ enLocale });
-Vue.use(Collapse,{ enLocale });
-Vue.use(CollapseItem,{ enLocale });
-Vue.use(Cascader,{ enLocale });
-Vue.use(Transfer,{ enLocale });
-Vue.use(Container,{ enLocale });
-Vue.use(Header,{ enLocale });
-Vue.use(Aside,{ enLocale });
-Vue.use(Main,{ enLocale });
-Vue.use(Footer,{ enLocale });
+Vue.use(Pagination, {enLocale});
+Vue.use(Dialog, {enLocale});
+Vue.use(Autocomplete, {enLocale});
+Vue.use(Dropdown, {enLocale});
+Vue.use(DropdownMenu, {enLocale});
+Vue.use(DropdownItem, {enLocale});
+Vue.use(Menu, {enLocale});
+Vue.use(Submenu, {enLocale});
+Vue.use(MenuItem, {enLocale});
+Vue.use(MenuItemGroup, {enLocale});
+Vue.use(Input, {enLocale});
+Vue.use(InputNumber, {enLocale});
+Vue.use(Radio, {enLocale});
+Vue.use(RadioGroup, {enLocale});
+Vue.use(RadioButton, {enLocale});
+Vue.use(Checkbox, {enLocale});
+Vue.use(CheckboxButton, {enLocale});
+Vue.use(CheckboxGroup, {enLocale});
+Vue.use(Switch, {enLocale});
+Vue.use(Select, {enLocale});
+Vue.use(Option, {enLocale});
+Vue.use(OptionGroup, {enLocale});
+Vue.use(Button, {enLocale});
+Vue.use(ButtonGroup, {enLocale});
+Vue.use(Table, {enLocale});
+Vue.use(TableColumn, {enLocale});
+Vue.use(Popover, {enLocale});
+Vue.use(Tooltip, {enLocale});
+Vue.use(Breadcrumb, {enLocale});
+Vue.use(BreadcrumbItem, {enLocale});
+Vue.use(Form, {enLocale});
+Vue.use(FormItem, {enLocale});
+Vue.use(Tabs, {enLocale});
+Vue.use(TabPane, {enLocale});
+Vue.use(Tag, {enLocale});
+Vue.use(Alert, {enLocale});
+Vue.use(Slider, {enLocale});
+Vue.use(Icon, {enLocale});
+Vue.use(Row, {enLocale});
+Vue.use(Col, {enLocale});
+Vue.use(Upload, {enLocale});
+Vue.use(Progress, {enLocale});
+Vue.use(Badge, {enLocale});
+Vue.use(Card, {enLocale});
+Vue.use(Steps, {enLocale});
+Vue.use(Step, {enLocale});
+Vue.use(Carousel, {enLocale});
+Vue.use(CarouselItem, {enLocale});
+Vue.use(Collapse, {enLocale});
+Vue.use(CollapseItem, {enLocale});
+Vue.use(Cascader, {enLocale});
+Vue.use(Transfer, {enLocale});
+Vue.use(Container, {enLocale});
+Vue.use(Header, {enLocale});
+Vue.use(Aside, {enLocale});
+Vue.use(Main, {enLocale});
+Vue.use(Footer, {enLocale});
 
-Vue.use(Loading.directive,{ enLocale });
+Vue.use(Loading.directive, {enLocale});
 
 Vue.prototype.$loading = Loading.service;
 Vue.prototype.$msgbox = MessageBox;
@@ -91,22 +91,23 @@ Vue.prototype.$prompt = MessageBox.prompt;
 Vue.prototype.$notify = Notification;
 Vue.prototype.$message = Message;
 
-Vue.filter('formatDate', function(value) {
+Vue.filter('formatDate', function (value) {
   if (value) {
     let date = new Date(value);
     let options = {
       year: '2-digit', month: '2-digit',
-      day: '2-digit', hour12: false ,
+      day: '2-digit', hour12: false,
       hour: '2-digit', minute: '2-digit'
     };
     return date.toLocaleDateString("en-US", options)
   }
 });
 
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
-  components: { App },
+  components: {App},
   template: '<App/>'
 });

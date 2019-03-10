@@ -13,4 +13,6 @@ urlpatterns = [
          name='start_inviting'),
     path('messaging/start', views.StartMessagingView.as_view(),
          name='start_messaging'),
+    path('statistics/', views.StatisticsView.as_view(),
+         name='statistics'),
 ] + router.urls
