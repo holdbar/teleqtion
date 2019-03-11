@@ -10,6 +10,7 @@ django-allauth==0.38.0
 django-cors-headers==2.4.0
 django-rest-auth==0.9.3
 djangorestframework==3.9.1
+gunicorn==19.9.0
 idna==2.8
 kombu==4.2.2.post1
 lxml==4.3.0
