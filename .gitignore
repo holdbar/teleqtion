@@ -18,4 +18,5 @@ app.js
 element-icons.ttf
 manifest.js
 .env
+.env.production
 uploads/
