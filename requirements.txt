@@ -15,6 +15,7 @@ kombu==4.2.2.post1
 lxml==4.3.0
 oauthlib==3.0.0
 psycopg2==2.7.7
+psycopg2-binary==2.7.7
 pyaes==1.6.1
 pyasn1==0.4.5
 PySocks==1.6.8
