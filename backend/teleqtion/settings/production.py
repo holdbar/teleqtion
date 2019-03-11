@@ -27,8 +27,8 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
 
 REDIS_HOST = config('REDIS_HOST')
-REDIS_PORT = config('REDIS_PORT', cast=int)
-REDIS_DB = config('REDIS_DB', cast=int)
+REDIS_PORT = config('REDIS_PORT')
+REDIS_DB = config('REDIS_DB')
 CELERY_BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/' + REDIS_DB
 CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/' + REDIS_DB
 
