@@ -17,3 +17,4 @@ vendor.js
 app.js
 element-icons.ttf
 manifest.js
+.env

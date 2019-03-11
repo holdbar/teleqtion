@@ -25,6 +25,9 @@
         </chart-results>
       </div>
     </div>
+    <div v-else style="margin-bottom: 35px">
+      <i>Do some invites or messages to see your statistics!</i>
+    </div>
 
     <tutorial-accordion/>
   </div>

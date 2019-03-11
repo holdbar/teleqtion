@@ -1,24 +1,37 @@
+from decouple import config, Csv
+
 from .base import *
 
 
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = config('SECRET_KEY')
 
-DEBUG = False
+DEBUG = config('DEBUG', cast=bool)
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(',')
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get('DB_NAME'),
-        'USER': os.environ.get('DB_USERNAME'),
-        'PASSWORD': os.environ.get('DB_PASSWORD'),
-        'HOST': os.environ.get('DB_HOST'),
-        'PORT': os.environ.get('DB_PORT'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT', cast=int),
     }
 }
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_PORT = config('EMAIL_PORT', cast=int)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
+
+REDIS_HOST = config('REDIS_HOST')
+REDIS_PORT = config('REDIS_PORT', cast=int)
+REDIS_DB = config('REDIS_DB', cast=int)
+CELERY_BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/' + REDIS_DB
+CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/' + REDIS_DB
+
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -26,11 +39,22 @@ REST_FRAMEWORK = {
     ]
 }
 
-PROXY_HOST = os.environ.get('PROXY_HOST')
-PROXY_PORT = os.environ.get('PROXY_PORT')
+PROXY_HOST = config('PROXY_HOST')
+PROXY_PORT = config('PROXY_PORT', cast=int)
 PROXY_USERNAME = os.environ.get('PROXY_USERNAME')
 PROXY_PASSWORD = os.environ.get('PROXY_PASSWORD')
 
 # Default API ID and API HASH
-API_ID = os.environ.get('API_ID')
-API_HASH = os.environ.get('API_HASH')
+API_ID = config('API_ID', cast=int)
+API_HASH = config('API_HASH')
+
+# Coinpayments
+COINPAYMENTS_API_KEY = config('COINPAYMENTS_API_KEY')
+COINPAYMENTS_API_SECRET = config('COINPAYMENTS_API_SECRET')
+COINPAYMENTS_IPN_URL = config('COINPAYMENTS_IPN_URL')
+COINPAYMENTS_IPN_SECRET = config('COINPAYMENTS_IPN_SECRET')
+COINPAYMENTS_MERCHANT_ID = config('COINPAYMENTS_MERCHANT_ID')
+
+COINMARKETCAP_API_KEY = config('COINMARKETCAP_API_KEY')
+
+CORS_ORIGIN_ALLOW_ALL = config('CORS_ORIGIN_ALLOW_ALL', cast=bool)
