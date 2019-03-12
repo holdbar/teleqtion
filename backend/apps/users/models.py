@@ -20,5 +20,6 @@ class User(AbstractUser):
     def __str__(self):
         return 'User [{}]'.format(self.email)
 
-    def update_balance(self, balance):
-        self.balance = balance
+    def update_balance(self, balance_change):
+        self.balance += balance_change
+        self.save()

@@ -130,7 +130,7 @@ def invites_task(limit, user_id, source_group_id, target_group_id,
                     [contact.username]
                 ))
                 invited += 1
-                user.update_balance(user.balance - price)
+                user.update_balance(-price)
                 InviteEvent.objects.create(user=user,
                                            source_group=source_group,
                                            target_group=target_group,
@@ -379,7 +379,7 @@ def messages_task(limit, user_id, group_id, message_id,
                     client.send_message(contact.username, message.text,
                                         link_preview=message.link_preview)
                 messaged += 1
-                user.update_balance(user.balance - price)
+                user.update_balance(-price)
                 MessageEvent.objects.create(user=user,
                                             telegram_group=group,
                                             telegram_account=account,
