@@ -17,8 +17,10 @@ class TelegramAccount(models.Model):
                                        blank=True, null=True)
     session = models.CharField(_('Session String'), max_length=500,
                                blank=True, null=True)
-    api_id = models.PositiveIntegerField(_('API ID'), blank=True, null=True)
-    api_hash = models.CharField(_('API HASH'), max_length=30, blank=True, null=True)
+    api_id = models.PositiveIntegerField(_('API ID'), blank=True,
+                                         default=settings.API_ID)
+    api_hash = models.CharField(_('API HASH'), max_length=30, blank=True,
+                                default=settings.API_HASH)
     system = models.BooleanField(_('System'), default=False)
     confirmed = models.BooleanField(_('Confirmed'), default=False)
     active = models.BooleanField(_('Active'), default=False,
