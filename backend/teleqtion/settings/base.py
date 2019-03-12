@@ -136,14 +136,14 @@ COINPAYMENTS_ACCEPTED_COINS = (
     ('WAVES', 'Waves'),
 )
 
-# for prices caching
-ACCEPTED_COINS_IDS = (
-    'bitcoin',
-    'litecoin',
-    'bitcoin-cash',
-    'dash',
-    'ethereum',
-    'qtum',
-    'true-usd',
-    'waves'
-)
+# for prices caching from CoinGecko
+ACCEPTED_COINS_IDS = {
+    'bitcoin': 'BTC',
+    'litecoin': 'LTC',
+    'bitcoin-cash': 'BCH',
+    'dash': 'DASH',
+    'ethereum': 'ETH',
+    'qtum': 'QTUM',
+    'true-usd': 'TUSD',
+    'waves': 'WAVES'
+}
