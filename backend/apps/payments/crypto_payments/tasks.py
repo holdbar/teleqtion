@@ -22,6 +22,7 @@ def collect_cryptocurrencies_rates():
         for currency in response:
             key = REDIS_PREFIX + settings.ACCEPTED_COINS_IDS[currency] + ':USD'
             r.set(key, response[currency]['usd'])
-
+        return True
     except Exception as e:
         print(e)
+        return e
