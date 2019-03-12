@@ -37,7 +37,7 @@ class CurrenciesView(views.APIView):
             data.append({
                 'symbol': currency[0],
                 'name': currency[1],
-                'price': round(float(r.get(REDIS_PREFIX + currency[0] + ':USD')), 4)
+                'price': round(float(r.get(REDIS_PREFIX + currency[0] + ':USD')), 2)
             })
         return Response(data)
 

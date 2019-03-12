@@ -135,3 +135,15 @@ COINPAYMENTS_ACCEPTED_COINS = (
     ('TUSD', 'TrueUSD'),
     ('WAVES', 'Waves'),
 )
+
+# for prices caching
+ACCEPTED_COINS_IDS = (
+    'bitcoin',
+    'litecoin',
+    'bitcoin-cash',
+    'dash',
+    'ethereum',
+    'qtum',
+    'true-usd',
+    'waves'
+)

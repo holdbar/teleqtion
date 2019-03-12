@@ -15,8 +15,8 @@ DATABASES = {
         'NAME': config('DB_NAME'),
         'USER': config('DB_USER'),
         'PASSWORD': config('DB_PASSWORD'),
-        'HOST': config('DB_HOST'),
-        'PORT': config('DB_PORT', cast=int),
+        'HOST': config('DB_HOST', default=''),
+        'PORT': config('DB_PORT', cast=int, default=''),
     }
 }
 
@@ -54,7 +54,5 @@ COINPAYMENTS_API_SECRET = config('COINPAYMENTS_API_SECRET')
 COINPAYMENTS_IPN_URL = config('COINPAYMENTS_IPN_URL')
 COINPAYMENTS_IPN_SECRET = config('COINPAYMENTS_IPN_SECRET')
 COINPAYMENTS_MERCHANT_ID = config('COINPAYMENTS_MERCHANT_ID')
-
-COINMARKETCAP_API_KEY = config('COINMARKETCAP_API_KEY')
 
 CORS_ORIGIN_ALLOW_ALL = config('CORS_ORIGIN_ALLOW_ALL', cast=bool)

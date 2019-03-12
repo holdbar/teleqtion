@@ -15,18 +15,13 @@ REDIS_PREFIX = 'RATE:'
 @celery_app.task
 def collect_cryptocurrencies_rates():
     try:
-        coins_formatted = ','.join([i[0] for i in settings.COINPAYMENTS_ACCEPTED_COINS])
-        url = 'https://pro-api.coinmarketcap.com/' \
-              'v1/cryptocurrency/quotes/latest' \
-              '?symbol={}&convert=USD'.format(coins_formatted)
-        headers = {'X-CMC_PRO_API_KEY': settings.COINMARKETCAP_API_KEY}
-        response = requests.get(url, headers=headers).json()
-        if response['status']['error_code'] != 0:
-            return
-
-        for currency in response['data']:
+        coins_formatted = ','.join(settings.ACCEPTED_COINS_IDS)
+        url = 'https://api.coingecko.com/api/v3/' \
+              'simple/price?ids={}&vs_currencies=usd'.format(coins_formatted)
+        response = requests.get(url).json()
+        for currency in response:
             key = REDIS_PREFIX + currency + ':USD'
-            r.set(key, response['data'][currency]['quote']['USD']['price'])
+            r.set(key, response[currency]['usd'])
 
     except Exception as e:
         print(e)
