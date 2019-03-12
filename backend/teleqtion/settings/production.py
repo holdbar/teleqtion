@@ -41,8 +41,8 @@ REST_FRAMEWORK = {
 
 PROXY_HOST = config('PROXY_HOST')
 PROXY_PORT = config('PROXY_PORT', cast=int)
-PROXY_USERNAME = os.environ.get('PROXY_USERNAME')
-PROXY_PASSWORD = os.environ.get('PROXY_PASSWORD')
+PROXY_USERNAME = config('PROXY_USERNAME')
+PROXY_PASSWORD = config('PROXY_PASSWORD')
 
 # Default API ID and API HASH
 API_ID = config('API_ID', cast=int)
