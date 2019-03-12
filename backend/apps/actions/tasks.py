@@ -374,10 +374,12 @@ def messages_task(limit, user_id, group_id, message_id,
                 if message.file:
                     client.send_message(contact.username, message.text,
                                         file=message.file.path,
-                                        link_preview=message.link_preview)
+                                        link_preview=message.link_preview,
+                                        parse_mode='html')
                 else:
                     client.send_message(contact.username, message.text,
-                                        link_preview=message.link_preview)
+                                        link_preview=message.link_preview,
+                                        parse_mode='html')
                 messaged += 1
                 user.update_balance(-price)
                 MessageEvent.objects.create(user=user,
