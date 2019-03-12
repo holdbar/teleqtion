@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="loading" element-loading-text="Please, wait. Scrapping in progress.">
+  <div v-loading="loading" element-loading-text="Please, wait. Inviting in progress.">
     <el-steps :active="4" align-center>
       <el-step title="Select source group" icon="el-icon-upload2"></el-step>
       <el-step title="Select target group" icon="el-icon-download"></el-step>

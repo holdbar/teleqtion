@@ -20,7 +20,5 @@ class User(AbstractUser):
     def __str__(self):
         return 'User [{}]'.format(self.email)
 
-    @transaction.atomic
     def update_balance(self, balance):
-        User.objects.select_for_update().filter(pk=self.pk).\
-            update(balance=balance)
+        self.balance = balance

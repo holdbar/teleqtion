@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="loading" element-loading-text="Please, wait. Scrapping in progress.">
+  <div v-loading="loading" element-loading-text="Please, wait. Messaging in progress.">
     <el-steps :active="4" align-center>
       <el-step title="Select group" icon="el-icon-upload2"></el-step>
       <el-step title="Select message" icon="el-icon-message"></el-step>
@@ -36,7 +36,7 @@
           @clear="handleClearMessage"
         ></el-autocomplete>
       </el-form-item>
-      <el-form-item label="Amount of users to invite" prop="amount">
+      <el-form-item label="Amount of users to send message to" prop="amount">
         <el-slider
           v-model="messagingForm.amount"
           show-input
