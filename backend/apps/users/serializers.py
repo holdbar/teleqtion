@@ -14,6 +14,9 @@ class CustomLoginSerializer(LoginSerializer):
 
 
 class CustomUserDetailsSerializer(UserDetailsSerializer):
+    balance = serializers.DecimalField(max_digits=40, decimal_places=2,
+                                       coerce_to_string=False, read_only=True)
+
     class Meta:
         model = UserModel
         fields = ('email', 'balance')
