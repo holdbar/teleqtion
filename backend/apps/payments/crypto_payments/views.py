@@ -1,4 +1,5 @@
 from decimal import Decimal
+import logging
 
 import redis
 from rest_framework import views, permissions, generics, status
@@ -17,7 +18,7 @@ r = redis.Redis(host=settings.REDIS_HOST,
                 port=settings.REDIS_PORT,
                 db=settings.REDIS_DB)
 REDIS_PREFIX = 'RATE:'
-
+logger = logging.getLogger('payments')
 
 class PaymentViewSet(generics.ListAPIView):
     serializer_class = PaymentSerializer
@@ -79,28 +80,28 @@ class CreatePaymentView(views.APIView):
 class IpnView(views.APIView):
 
     def post(self, request):
-        print('POST: {}'.format(request.POST))
-        print('META: {}'.format(request.META))
+        logger.error('POST: {}'.format(request.POST))
+        logger.error('META: {}'.format(request.META))
         ipn_mode = request.POST.get('ipn_mode')
         if ipn_mode != 'hmac':
-            print('IPN Mode is not HMAC.')
+            logger.error('IPN Mode is not HMAC.')
             return Response({'error': 'IPN Mode is not HMAC'},
                             status=status.HTTP_400_BAD_REQUEST)
         http_hmac = request.META.get('HTTP_HMAC')
         if not http_hmac:
-            print('No HMAC signature sent.')
+            logger.error('No HMAC signature sent.')
             return Response({'error': 'No HMAC signature sent.'},
                             status=status.HTTP_400_BAD_REQUEST)
 
         our_hmac = create_ipn_hmac(request)
         if our_hmac != http_hmac:
-            print('HMAC mismatch.')
+            logger.error('HMAC mismatch.')
             return Response({'error': 'HMAC mismatch.'},
                             status=status.HTTP_400_BAD_REQUEST)
 
         merchant_id = getattr(settings, 'COINPAYMENTS_MERCHANT_ID', None)
         if request.POST.get('merchant') != merchant_id:
-            print('Invalid merchant id.')
+            logger.error('Invalid merchant id.')
             return Response({'error': 'Invalid merchant id'},
                             status=status.HTTP_400_BAD_REQUEST)
         tx_id = request.POST.get('txn_id')
