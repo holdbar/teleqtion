@@ -22,7 +22,7 @@ class PaymentSerializer(serializers.ModelSerializer):
                                       coerce_to_string=False)
     amount_paid = serializers.DecimalField(decimal_places=18, max_digits=65,
                                            coerce_to_string=False)
-    amount_original = serializers.DecimalField(decimal_places=10, max_digits=12,
+    amount_original = serializers.DecimalField(decimal_places=18, max_digits=65,
                                                coerce_to_string=False)
 
     class Meta:
