@@ -20,6 +20,20 @@
 
     <link rel="stylesheet" href="{% static 'css/main.min.css' %}">
 
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-136103230-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'UA-136103230-1');
+    </script>
+
 </head>
 
 <body>
@@ -136,7 +150,8 @@
                             <div class="card-body">
                                 You have 2 options: to add your phone numbers, that will
                                 be used for messaging and inviting, or to use ours. In this case, price per message or
-                                invite is a little bit higher, but you don't have to worry where to get new phone numbers.
+                                invite is a little bit higher, but you don't have to worry where to get new phone
+                                numbers.
                                 Advertising your business has never been easier!
                             </div>
                         </div>
