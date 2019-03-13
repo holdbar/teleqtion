@@ -8,21 +8,25 @@ from apps.telegram_entities.models import TelegramGroup, TelegramContact, Messag
 
 class InviteEvent(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             on_delete=models.CASCADE,
-                             related_name='invite_events')
+                             on_delete=models.SET_NULL,
+                             related_name='invite_events',
+                             null=True)
     telegram_account = models.ForeignKey(
         TelegramAccount,
-        on_delete=models.CASCADE,
-        related_name='invite_events'
+        on_delete=models.SET_NULL,
+        related_name='invite_events',
+        null=True
     )
     source_group = models.ForeignKey(TelegramGroup,
-                                     on_delete=models.CASCADE,
-                                     related_name='invites_from')
+                                     on_delete=models.SET_NULL,
+                                     related_name='invites_from',
+                                     null=True)
     target_group = models.ForeignKey(TelegramGroup,
-                                     on_delete=models.CASCADE,
-                                     related_name='invites_to')
+                                     on_delete=models.SET_NULL,
+                                     related_name='invites_to',
+                                     null=True)
     contact = models.ForeignKey(TelegramContact,
-                                on_delete=models.CASCADE,
+                                on_delete=models.SET_NULL,
                                 related_name='invites',
                                 blank=True, null=True)
     success = models.BooleanField(_('Success'), default=False)
@@ -33,23 +37,27 @@ class InviteEvent(models.Model):
 
 class MessageEvent(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             on_delete=models.CASCADE,
-                             related_name='message_events')
+                             on_delete=models.SET_NULL,
+                             related_name='message_events',
+                             null=True)
     telegram_account = models.ForeignKey(
         TelegramAccount,
-        on_delete=models.CASCADE,
-        related_name='message_events'
+        on_delete=models.SET_NULL,
+        related_name='message_events',
+        null=True
     )
     telegram_group = models.ForeignKey(TelegramGroup,
-                                       on_delete=models.CASCADE,
-                                       related_name='message_events')
+                                       on_delete=models.SET_NULL,
+                                       related_name='message_events',
+                                       null=True)
     contact = models.ForeignKey(TelegramContact,
-                                on_delete=models.CASCADE,
+                                on_delete=models.SET_NULL,
                                 related_name='message_events',
                                 blank=True, null=True)
     message = models.ForeignKey(Message,
-                                on_delete=models.CASCADE,
-                                related_name='message_events')
+                                on_delete=models.SET_NULL,
+                                related_name='message_events',
+                                null=True)
     success = models.BooleanField(_('Success'), default=False)
     error = models.CharField(_('Error'), max_length=100, blank=True, null=True)
     price = models.FloatField(_('Price'), default=0)

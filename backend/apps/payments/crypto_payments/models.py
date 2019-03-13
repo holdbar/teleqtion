@@ -46,8 +46,9 @@ class Payment(models.Model):
         (PAYMENT_STATUS_PAID, _('Paid'))
     )
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             on_delete=models.CASCADE,
-                             related_name='payments')
+                             on_delete=models.SET_NULL,
+                             related_name='payments',
+                             null=True)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     currency_original = models.CharField(max_length=8, default='USD',
                                          verbose_name=_('Original currency'))
