@@ -116,3 +116,4 @@ class IpnView(views.APIView):
                     payment.status = Payment.PAYMENT_STATUS_PAID
                     payment.user.update_balance(payment.amount)
                 payment.save()
+        return Response()
