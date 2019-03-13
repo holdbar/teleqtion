@@ -107,7 +107,8 @@ Vue.filter('formatDate', function (value) {
 
 
 Vue.use(VueAnalytics, {
-  id: 'UA-136103230-1'
+  id: 'UA-136103230-1',
+  router
 });
 
 /* eslint-disable no-new */
