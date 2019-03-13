@@ -37,6 +37,9 @@
           </time>
         </div>
       </el-card>
+      <div v-if="!messages.length" class="no-messages">
+        You don't have any messages yet. Please, create one at first.
+      </div>
     </el-row>
     <el-pagination v-if="this.total_pages > 10"
                    layout="prev, pager, next"
@@ -162,5 +165,9 @@
   .box-card {
     width: 21em;
     margin: 1em;
+  }
+  .no-messages {
+    text-align: center;
+    margin: 50px auto;
   }
 </style>

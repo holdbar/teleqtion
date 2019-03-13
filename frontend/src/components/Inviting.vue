@@ -44,6 +44,9 @@
           :max=maxInvitesAmount
           class="amountSlider">
         </el-slider>
+        <div v-show="invitingForm.amount > 0">
+          About {{ approximatePrice() }} $ will be withdrawn from your balance.
+        </div>
       </el-form-item>
       <el-form-item label="Use system accounts" prop="useSystemNumbers">
         <el-switch v-if="this.userHasOwnAccounts"
@@ -105,7 +108,7 @@
         invitingForm: {
           sourceGroup: '',
           targetGroup: '',
-          amount: 1,
+          amount: 0,
           useSystemNumbers: true
         },
         rules: {
@@ -327,7 +330,12 @@
           });
           this.loading = false;
         })
-      }
+      },
+       approximatePrice() {
+        let price = this.invitingForm.useSystemNumbers ? 0.06 : 0.04;
+        let result = this.invitingForm.amount * price;
+        return result.toFixed(2);
+      },
     },
     mounted() {
       this.checkIfUserHasOwnAccounts();

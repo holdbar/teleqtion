@@ -44,6 +44,9 @@
           :max=maxMessagesAmount
           class="amountSlider">
         </el-slider>
+        <div v-show="messagingForm.amount > 0">
+          About {{ approximatePrice() }} $ will be withdrawn from your balance.
+        </div>
       </el-form-item>
       <el-form-item label="Use system accounts" prop="useSystemNumbers">
         <el-switch v-if="this.userHasOwnAccounts"
@@ -58,7 +61,7 @@
         </el-tooltip>
       </el-form-item>
       <el-form-item>
-        <el-button v-if="this.maxMessagesAmount > 0" type="primary" @click="onSubmit">Start messaging</el-button>
+        <el-button v-if="maxMessagesAmount > 0" type="primary" @click="onSubmit">Start messaging</el-button>
         <el-button v-else type="primary" disabled>Start messaging</el-button>
       </el-form-item>
     </el-form>
@@ -310,7 +313,12 @@
           });
           this.loading = false;
         })
-      }
+      },
+      approximatePrice() {
+        let price = this.messagingForm.useSystemNumbers ? 0.06 : 0.04;
+        let result = this.messagingForm.amount * price;
+        return result.toFixed(2);
+      },
     },
     mounted() {
       this.checkIfUserHasOwnAccounts();
@@ -322,6 +330,7 @@
   .el-steps {
     margin-top: 2%;
   }
+
   .el-form {
     margin: 5% 0;
   }

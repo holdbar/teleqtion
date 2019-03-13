@@ -1,4 +1,6 @@
 import Vue from 'vue'
+import VueAnalytics from 'vue-analytics'
+
 import App from './App'
 import router from './router'
 
@@ -103,6 +105,10 @@ Vue.filter('formatDate', function (value) {
   }
 });
 
+
+Vue.use(VueAnalytics, {
+  id: 'UA-136103230-1'
+});
 
 /* eslint-disable no-new */
 new Vue({
