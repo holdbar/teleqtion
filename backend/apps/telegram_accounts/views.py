@@ -20,9 +20,14 @@ class TelegramAccountViewSet(viewsets.ModelViewSet):
     pagination_class = SmallResultsSetPagination
 
     def get_queryset(self):
-        queryset = TelegramAccount.objects.filter(
-            user=self.request.user
-        ).order_by('-added_at')
+        if self.request.user.is_superuser:
+            queryset = TelegramAccount.objects.filter(
+                system=True
+            ).order_by('-added_at')
+        else:
+            queryset = TelegramAccount.objects.filter(
+                user=self.request.user
+            ).order_by('-added_at')
         phone_number = self.request.query_params.get('phone_number')
         active = self.request.query_params.get('active')
         confirmed = self.request.query_params.get('confirmed')
@@ -41,6 +46,13 @@ class TelegramAccountViewSet(viewsets.ModelViewSet):
                 confirmed=True if confirmed == 't' else False
             )
         return queryset
+
+    def perform_create(self, serializer):
+        if self.request.user.is_superuser:
+            serializer.validated_data['system'] = True
+            serializer.save()
+        else:
+            serializer.save()
 
     @action(detail=False, methods=['post'],
             serializer_class=TelegramAccountCodeRequestSerializer,

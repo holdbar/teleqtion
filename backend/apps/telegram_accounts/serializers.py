@@ -13,6 +13,9 @@ class TelegramAccountSerializer(serializers.ModelSerializer):
         fields = ('id', 'user', 'phone_number', 'confirmed', 'active',
                   'error_name', 'error_datetime', 'last_used', 'added_at',
                   'invites_count', 'messages_count')
+        read_only_fields = ('id', 'user', 'confirmed', 'active',
+                            'error_name', 'error_datetime', 'last_used',
+                            'added_at', 'invites_count', 'messages_count')
 
 
 class TelegramAccountConfirmSerializer(serializers.Serializer):

@@ -79,22 +79,28 @@ class CreatePaymentView(views.APIView):
 class IpnView(views.APIView):
 
     def post(self, request):
+        print('POST: {}'.format(request.POST))
+        print('META: {}'.format(request.META))
         ipn_mode = request.POST.get('ipn_mode')
         if ipn_mode != 'hmac':
+            print('IPN Mode is not HMAC.')
             return Response({'error': 'IPN Mode is not HMAC'},
                             status=status.HTTP_400_BAD_REQUEST)
         http_hmac = request.META.get('HTTP_HMAC')
         if not http_hmac:
+            print('No HMAC signature sent.')
             return Response({'error': 'No HMAC signature sent.'},
                             status=status.HTTP_400_BAD_REQUEST)
 
         our_hmac = create_ipn_hmac(request)
         if our_hmac != http_hmac:
+            print('HMAC mismatch.')
             return Response({'error': 'HMAC mismatch.'},
                             status=status.HTTP_400_BAD_REQUEST)
 
         merchant_id = getattr(settings, 'COINPAYMENTS_MERCHANT_ID', None)
         if request.POST.get('merchant') != merchant_id:
+            print('Invalid merchant id.')
             return Response({'error': 'Invalid merchant id'},
                             status=status.HTTP_400_BAD_REQUEST)
         tx_id = request.POST.get('txn_id')
