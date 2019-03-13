@@ -13,8 +13,8 @@ def get_coins_list():
     return coins
 
 
-def create_ipn_hmac(request):
+def create_ipn_hmac(post_data):
     ipn_secret = getattr(settings, 'COINPAYMENTS_IPN_SECRET', None)
-    encoded = urlencode(request.POST).encode('utf-8')
+    encoded = urlencode(post_data).encode('utf-8')
     hsh = hmac.new(bytearray(ipn_secret, 'utf-8'), encoded, hashlib.sha512).hexdigest()
     return hsh

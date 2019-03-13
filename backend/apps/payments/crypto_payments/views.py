@@ -93,7 +93,7 @@ class IpnView(views.APIView):
             return Response({'error': 'No HMAC signature sent.'},
                             status=status.HTTP_400_BAD_REQUEST)
 
-        our_hmac = create_ipn_hmac(request)
+        our_hmac = create_ipn_hmac(request.POST.dict())
         if our_hmac != http_hmac:
             logger.error('HMAC mismatch.')
             return Response({'error': 'HMAC mismatch.'},
@@ -107,8 +107,10 @@ class IpnView(views.APIView):
         tx_id = request.POST.get('txn_id')
         payment = Payment.objects.filter(provider_tx_id__exact=tx_id).first()
         if payment:
-            if payment.currency_original != request.POST.get('currency1'):
-                return Response({'error': 'Currency mismatch'})
+            if payment.currency_paid != request.POST.get('currency2'):
+                logger.error('Currency mismatch.')
+                return Response({'error': 'Currency mismatch.'},
+                                status=status.HTTP_400_BAD_REQUEST)
             if payment.status != Payment.PAYMENT_STATUS_PAID:
                 payment_status = int(request.POST['status'])
                 if payment_status == 2 or payment_status >= 100:
