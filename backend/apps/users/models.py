@@ -20,6 +20,7 @@ class User(AbstractUser):
     def __str__(self):
         return 'User [{}]'.format(self.email)
 
+    @transaction.atomic
     def update_balance(self, balance_change):
         self.balance += balance_change
         self.save()

@@ -77,6 +77,9 @@ class Message(models.Model):
     added_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return 'Message [{}]'.format(self.title)
+
 
 @receiver(models.signals.post_delete, sender=Message)
 def auto_delete_file_on_delete(sender, instance, **kwargs):
