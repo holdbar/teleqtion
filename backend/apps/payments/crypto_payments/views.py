@@ -119,7 +119,7 @@ class IpnView(views.APIView):
                     payment.status = Payment.PAYMENT_STATUS_TIMEOUT
                 else:
                     payment.amount_paid = Decimal(request.POST['received_amount'])
-                if payment.amount_paid >= payment.amount_original:
+                if payment.amount_paid >= payment.amount_original():
                     payment.status = Payment.PAYMENT_STATUS_PAID
                     payment.user.update_balance(payment.amount)
                 payment.save()
