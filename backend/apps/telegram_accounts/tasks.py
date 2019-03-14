@@ -15,7 +15,7 @@ from .models import TelegramAccount
 from .utils import get_random_user_data, get_new_api_credentials
 
 
-@celery_app.task(soft_time_limit=60)
+@celery_app.task(time_limit=60)
 def confirm_account(account_id, code):
     try:
         account = TelegramAccount.objects.get(pk=account_id)
@@ -106,7 +106,7 @@ def confirm_account(account_id, code):
         return {'success': False, 'error': error}
 
 
-@celery_app.task
+@celery_app.task(time_limit=30)
 def send_code_request(account_id):
     account = TelegramAccount.objects.get(pk=account_id)
     try:

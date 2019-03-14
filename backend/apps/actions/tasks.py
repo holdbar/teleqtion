@@ -26,7 +26,7 @@ from .utils import join_group
 User = get_user_model()
 
 
-@celery_app.task
+@celery_app.task(time_limit=120)
 def invites_task(limit, user_id, source_group_id, target_group_id,
                  numbers_list=None, use_system_numbers=False):
     user = User.objects.get(pk=user_id)
@@ -220,7 +220,7 @@ def invites_task(limit, user_id, source_group_id, target_group_id,
     return {'success': True, 'error': None}
 
 
-@celery_app.task
+@celery_app.task(time_limit=120)
 def scrape_task(user_id, group_id, tg_account_id=None):
     user = User.objects.get(pk=user_id)
     group = TelegramGroup.objects.get(pk=group_id)
@@ -292,7 +292,7 @@ def scrape_task(user_id, group_id, tg_account_id=None):
     return {'success': True, 'error': None, 'message': message}
 
 
-@celery_app.task
+@celery_app.task(time_limit=120)
 def messages_task(limit, user_id, group_id, message_id,
                   numbers_list=None, use_system_numbers=False):
     user = User.objects.get(pk=user_id)
