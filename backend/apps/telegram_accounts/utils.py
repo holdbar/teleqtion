@@ -1,10 +1,10 @@
 import random
 import time
 
-import asyncio
 import requests
 from lxml import etree
 
+from django.utils.translation import gettext as _
 from django.conf import settings
 
 

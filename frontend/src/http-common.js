@@ -6,7 +6,7 @@ export const LOGIN_URL = 'https://teleqtion.com/login/';
 // export const LOGIN_URL = 'http://localhost:8000/login/';
 
 const token = localStorage.getItem('token');
-// const token = '84008577a7cc4ef6188dca4e4ef7e3e0f8f48450';
+// const token = '079f1afa0de07ec1d8abb7c2d7f09de1c59b9ebe';
 if (!token) {
   window.location.replace(LOGIN_URL);
 }

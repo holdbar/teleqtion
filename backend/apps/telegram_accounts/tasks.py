@@ -104,45 +104,53 @@ def confirm_account(account_id, code):
     except SoftTimeLimitExceeded:
         error = _("Error happened. Please, try again later.")
         return {'success': False, 'error': error}
+    except:
+        error = _("Error happened. Please, try again later.")
+        return {'success': False, 'error': error}
 
 
 @celery_app.task(time_limit=30)
 def send_code_request(account_id):
-    account = TelegramAccount.objects.get(pk=account_id)
     try:
-        random_confirmed_account = random.choice(
-            TelegramAccount.objects.filter(active=True,
-                                           confirmed=True)
+        account = TelegramAccount.objects.get(pk=account_id)
+        try:
+            random_confirmed_account = random.choice(
+                TelegramAccount.objects.filter(active=True,
+                                               confirmed=True)
+            )
+        except IndexError:
+            random_confirmed_account = None
+        if random_confirmed_account:
+            api_id, api_hash = random_confirmed_account.api_id, random_confirmed_account.api_hash
+        else:
+            api_id, api_hash = settings.API_ID, settings.API_HASH
+
+        proxy_settings = (
+            socks.HTTP,
+            settings.PROXY_HOST,
+            settings.PROXY_PORT, True,
+            settings.PROXY_USERNAME+'-session-{}'.format(random.randint(9999, 9999999)),
+            settings.PROXY_PASSWORD
         )
-    except IndexError:
-        random_confirmed_account = None
-    if random_confirmed_account:
-        api_id, api_hash = random_confirmed_account.api_id, random_confirmed_account.api_hash
-    else:
-        api_id, api_hash = settings.API_ID, settings.API_HASH
 
-    proxy_settings = (
-        socks.HTTP,
-        settings.PROXY_HOST,
-        settings.PROXY_PORT, True,
-        settings.PROXY_USERNAME+'-session-{}'.format(random.randint(9999, 9999999)),
-        settings.PROXY_PASSWORD
-    )
+        client = TelegramClient(StringSession(), api_id, api_hash,
+                                proxy=proxy_settings)
+        client.connect()
 
-    client = TelegramClient(StringSession(), api_id, api_hash,
-                            proxy=proxy_settings)
-    client.connect()
+        try:
+            r = client.send_code_request(account.phone_number,
+                                         force_sms=True)
+            account.phone_code_hash = r.phone_code_hash
+            account.session = client.session.save()
+            account.api_id = api_id
+            account.api_hash = api_hash
+            account.save()
+            client.disconnect()
 
-    try:
-        r = client.send_code_request(account.phone_number,
-                                     force_sms=True)
-        account.phone_code_hash = r.phone_code_hash
-        account.session = client.session.save()
-        account.api_id = api_id
-        account.api_hash = api_hash
-        account.save()
-        client.disconnect()
-        return {'success': True, 'error': None}
+            return {'success': True, 'error': None}
+        except Exception as e:
+            print(e)
+            return {'success': False, 'error': _('Error sending code request.')}
     except Exception as e:
         print(e)
         return {'success': False, 'error': _('Error sending code request.')}

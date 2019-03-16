@@ -2,7 +2,8 @@
   <div id="app">
     <el-container>
       <el-row :gutter="10">
-        <el-col :md="6" :lg="4" class="hidden-sm-and-down sideMenu">
+        <!--<el-col :md="6" :lg="4" class="hidden-sm-and-down sideMenu">-->
+        <el-col :md="6" :lg="4" class="sideMenu">
           <SideMenu/>
         </el-col>
         <el-col :sm="24" :md="18" :lg="20">
@@ -13,6 +14,11 @@
         </el-col>
       </el-row>
     </el-container>
+    <div id="support">
+      <el-tag type="success" :hit=true>
+        contact@teleqtion.com
+      </el-tag>
+    </div>
   </div>
 </template>
 
@@ -53,12 +59,18 @@
     position: relative;
   }
 
+  #support {
+    position: fixed;
+    bottom: 0;
+    left: 40px;
+    font-weight: bolder;
+  }
+
   .sideMenu {
     transition: border-color .3s, background-color .3s, color .3s;
     border-right: solid 1px #e6e6e6;
     height: 100%;
     padding-right: 0 !important;
-
   }
 
   #app {
