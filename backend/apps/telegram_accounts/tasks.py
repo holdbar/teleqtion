@@ -19,7 +19,7 @@ from .utils import get_random_user_data, get_new_api_credentials
 logger = logging.getLogger(__name__)
 
 
-@celery_app.task(time_limit=60)
+@celery_app.task(time_limit=90)
 def confirm_account(account_id, code):
     try:
         account = TelegramAccount.objects.get(pk=account_id)
@@ -114,7 +114,7 @@ def confirm_account(account_id, code):
         return {'success': False, 'error': error}
 
 
-@celery_app.task(time_limit=30)
+@celery_app.task(time_limit=60)
 def send_code_request(account_id):
     try:
         account = TelegramAccount.objects.get(pk=account_id)
