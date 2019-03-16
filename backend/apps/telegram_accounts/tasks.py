@@ -8,7 +8,8 @@ from django.utils import timezone
 from django.utils.translation import gettext as _
 from telethon.sync import TelegramClient
 from telethon.sessions import StringSession
-from telethon.errors import PhoneNumberOccupiedError, SessionPasswordNeededError
+from telethon.errors import PhoneNumberOccupiedError, SessionPasswordNeededError, \
+    PhoneNumberBannedError
 import socks
 
 from teleqtion.celery import app as celery_app
@@ -152,6 +153,10 @@ def send_code_request(account_id):
             client.disconnect()
 
             return {'success': True, 'error': None}
+        except PhoneNumberBannedError:
+            return {'success': False, 'error': _('The used phone number has been '
+                                                 'banned from Telegram and cannot '
+                                                 'be used anymore.')}
         except Exception as e:
             logger.exception(e)
             return {'success': False, 'error': _('Error sending code request.')}
