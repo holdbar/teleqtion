@@ -1,5 +1,6 @@
 import random
 import time
+import logging
 
 from celery.exceptions import SoftTimeLimitExceeded
 from django.conf import settings
@@ -13,6 +14,8 @@ import socks
 from teleqtion.celery import app as celery_app
 from .models import TelegramAccount
 from .utils import get_random_user_data, get_new_api_credentials
+
+logger = logging.getLogger(__name__)
 
 
 @celery_app.task(time_limit=60)
@@ -54,7 +57,7 @@ def confirm_account(account_id, code):
         except SessionPasswordNeededError:
             error = _('Two Factor Authorization is not yet supported.')
         except Exception as e:
-            print(e)
+            logger.exception(e)
             error = _('Error during sign in or sign up.')
 
         if error:
@@ -79,7 +82,7 @@ def confirm_account(account_id, code):
             # get login code
             messages = client_temp.get_messages(777000, 3)
             code = ''.join([i for i in messages[0].message if i.isdigit()])
-            print('code is {}'.format(code))
+            logger.info('code is {}'.format(code))
             client.sign_in(account.phone_number, code)
 
             myself = client.get_me()
@@ -98,13 +101,14 @@ def confirm_account(account_id, code):
                 return {'success': True, 'error': None}
 
         except Exception as e:
-            print(e)
+            logger.exception(e)
             error = _("Error happened. Please, try again later.")
             return {'success': False, 'error': error}
     except SoftTimeLimitExceeded:
         error = _("Error happened. Please, try again later.")
         return {'success': False, 'error': error}
-    except:
+    except Exception as e:
+        logger.exception(e)
         error = _("Error happened. Please, try again later.")
         return {'success': False, 'error': error}
 
@@ -149,8 +153,8 @@ def send_code_request(account_id):
 
             return {'success': True, 'error': None}
         except Exception as e:
-            print(e)
+            logger.exception(e)
             return {'success': False, 'error': _('Error sending code request.')}
     except Exception as e:
-        print(e)
+        logger.exception(e)
         return {'success': False, 'error': _('Error sending code request.')}

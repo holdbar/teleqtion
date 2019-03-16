@@ -1,4 +1,5 @@
 import random
+import logging
 
 from django.conf import settings
 from django.utils.translation import gettext as _
@@ -24,6 +25,7 @@ from apps.actions.models import InviteEvent, MessageEvent
 from .utils import join_group
 
 User = get_user_model()
+logger = logging.getLogger(__name__)
 
 
 @celery_app.task(time_limit=120)
@@ -76,7 +78,7 @@ def invites_task(limit, user_id, source_group_id, target_group_id,
             try:
                 client.connect()
             except Exception as e:
-                print(e)
+                logger.exception(e)
                 account.set_is_used(False)
                 continue
 
@@ -87,7 +89,7 @@ def invites_task(limit, user_id, source_group_id, target_group_id,
                     else target_group.join_link
                 )
             except Exception as e:
-                print(e)
+                logger.exception(e)
                 client.disconnect()
                 account.set_is_used(False)
                 return {'success': False, 'error': _('Target Group invalid.')}
@@ -145,7 +147,7 @@ def invites_task(limit, user_id, source_group_id, target_group_id,
                 except (PeerFloodError, AuthKeyUnregisteredError, UserDeactivatedError,
                         ChatWriteForbiddenError, UserBannedInChannelError,
                         ChannelsTooMuchError) as e:
-                    print(e)
+                    logger.exception(e)
                     account.deactivate(e.__class__.__name__)
                     account.set_is_used(False)
                     client.disconnect()
@@ -222,7 +224,7 @@ def invites_task(limit, user_id, source_group_id, target_group_id,
 
         return {'success': True, 'error': None}
     except Exception as e:
-        print(e)
+        logger.exception(e)
         return {'success': True, 'error': None}
 
 
@@ -258,7 +260,7 @@ def scrape_task(user_id, group_id, tg_account_id=None):
             group_entity = client.get_input_entity(group.username if group.username
                                                    else group.join_link)
         except Exception as e:
-            print(e)
+            logger.exception(e)
             account.set_is_used(False)
             client.disconnect()
             return {'success': False, 'error': _('Error finding group.')}
@@ -298,7 +300,7 @@ def scrape_task(user_id, group_id, tg_account_id=None):
         message = _('Scrapped {} users.'.format(len(members)))
         return {'success': True, 'error': None, 'message': message}
     except Exception as e:
-        print(e)
+        logger.exception(e)
         return {'success': True, 'error': _('Error getting list of group '
                                             'members.')}
 
@@ -354,7 +356,7 @@ def messages_task(limit, user_id, group_id, message_id,
             try:
                 client.connect()
             except Exception as e:
-                print(e)
+                logger.exception(e)
                 account.set_is_used(False)
                 continue
 
@@ -406,7 +408,6 @@ def messages_task(limit, user_id, group_id, message_id,
                 except (PeerFloodError, AuthKeyUnregisteredError, UserDeactivatedError,
                         ChatWriteForbiddenError, UserBannedInChannelError,
                         ChannelsTooMuchError) as e:
-                    print(e)
                     client.disconnect()
                     account.set_is_used(False)
                     account.deactivate(e.__class__.__name__)
@@ -419,7 +420,6 @@ def messages_task(limit, user_id, group_id, message_id,
                                                 message=message,
                                                 error=e.__class__.__name__)
                     account.update_last_used()
-                    print(e)
 
             account.set_is_used(False)
 
@@ -428,5 +428,5 @@ def messages_task(limit, user_id, group_id, message_id,
 
         return {'success': True, 'error': None}
     except Exception as e:
-        print(e)
+        logger.exception(e)
         return {'success': True, 'error': _('Error sending message.')}
