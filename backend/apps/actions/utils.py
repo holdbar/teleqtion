@@ -1,3 +1,5 @@
+from django.utils.translation import gettext as _
+
 from telethon.tl.functions.channels import JoinChannelRequest
 from telethon.errors import ChannelsTooMuchError, ChannelInvalidError,\
     ChannelPrivateError
@@ -16,3 +18,6 @@ def join_group(client, account, group):
     except ChannelPrivateError:
         return {'success': False, 'error': _('Group is Private and not '
                                              'accessible.')}
+    except Exception as e:
+        return {'success': False, 'error': _('Error occured. '
+                                             'Please, try again later.')}
