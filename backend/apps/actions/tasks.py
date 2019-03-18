@@ -95,7 +95,7 @@ def invites_task(limit, user_id, source_group_id, target_group_id,
                 return {'success': False, 'error': _('Target Group invalid.')}
 
             # join channel
-            joined = join_group(client, account, target_group)
+            joined = join_group(client, account, target_group_entity)
             if not joined:
                 account.set_is_used(False)
                 client.disconnect()
