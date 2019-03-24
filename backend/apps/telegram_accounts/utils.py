@@ -54,7 +54,7 @@ def get_new_api_credentials(client, phone_number):
         }
         s = requests.Session()
         s.proxies = proxies
-        s.headers.update({'User-Agent': user_agent, 'Connection': 'close'})
+        s.headers.update({'User-Agent': user_agent})
 
         # get cookies
         s.get('https://my.telegram.org/auth')
