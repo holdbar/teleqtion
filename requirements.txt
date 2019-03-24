@@ -28,6 +28,6 @@ requests==2.21.0
 requests-oauthlib==1.2.0
 rsa==4.0
 six==1.12.0
-Telethon==1.6.2
+Telethon-sync==1.1.1
 urllib3==1.24.1
 vine==1.2.0

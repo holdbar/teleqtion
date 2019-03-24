@@ -6,22 +6,21 @@ from django.utils.translation import gettext as _
 from django.contrib.auth import get_user_model
 from django.db import transaction
 from django.db.models import Q
-from telethon.sync import TelegramClient
-from telethon.sessions import StringSession
+from telethon import TelegramClient
 from telethon.tl.types import ChannelParticipantsAdmins, ChannelParticipantsRecent
 from telethon.tl.functions.channels import InviteToChannelRequest
 from telethon.errors import PeerFloodError, \
     UserDeactivatedError, AuthKeyUnregisteredError, ChannelsTooMuchError, \
     ChannelPrivateError, ChatAdminRequiredError, ChatWriteForbiddenError, \
     InputUserDeactivatedError, UsersTooMuchError, UserBannedInChannelError, \
-    ChatInvalidError, ChatIdInvalidError
+    ChatIdInvalidError
 import socks
 
 from teleqtion.celery import app as celery_app
 from apps.telegram_accounts.models import TelegramAccount
 from apps.telegram_entities.models import TelegramGroup, TelegramContact, Message
 from apps.actions.models import InviteEvent, MessageEvent
-
+from apps.telegram_accounts.telethon_sessions import StringSession
 from .utils import join_group
 
 User = get_user_model()
@@ -165,7 +164,7 @@ def invites_task(limit, user_id, source_group_id, target_group_id,
                     client.disconnect()
                     return {'success': False, 'error': _('Cannot invite to Channel, '
                                                          'since it is private.')}
-                except (ChatInvalidError, ChatIdInvalidError) as e:
+                except ChatIdInvalidError as e:
                     InviteEvent.objects.create(user=user,
                                                source_group=source_group,
                                                target_group=target_group,

@@ -6,8 +6,8 @@ from celery.exceptions import SoftTimeLimitExceeded
 from django.conf import settings
 from django.utils import timezone
 from django.utils.translation import gettext as _
-from telethon.sync import TelegramClient
-from telethon.sessions import StringSession
+from telethon import TelegramClient
+from .telethon_sessions import StringSession
 from telethon.errors import PhoneNumberOccupiedError, SessionPasswordNeededError, \
     PhoneNumberBannedError
 import socks
